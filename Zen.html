@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zen Meditation — Chloe Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --bg2: #eee9e1;
+      --bg3: #e6f4f0;
+      --text: #1c1a17;
+      --muted: #8a8378;
+      --border: #ddd8cf;
+      --pink: #d98b7e;
+      --green: #4a9e8a;
+      --green-light: #7cc4b2;
+      --grad: linear-gradient(135deg, #c9526a, #e8957c);
+      --grad-text: linear-gradient(135deg, #c9526a, #d98b7e);
+      --zen-grad: linear-gradient(135deg, #4a9e8a, #7cc4b2);
+      --zen-grad-text: linear-gradient(135deg, #3a8a78, #7cc4b2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* SCROLL PROGRESS */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--zen-grad);
+      z-index: 9999; transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* GRAIN */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 128px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem clamp(3.5rem, 8vw, 10rem);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.9);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem; color: var(--text);
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--muted); text-decoration: none; transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 1px; background: var(--zen-grad);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem clamp(3.5rem, 8vw, 10rem) 0;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s; line-height: 1;
+      opacity: 0; animation: fadeUp 0.5s 0.05s forwards;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { transition: transform 0.2s; flex-shrink: 0; display: block; margin-top: 1px; }
+    .back-link:hover svg { transform: translateX(-3px); }
+
+    .hero-tag {
+      display: block;
+      margin-top: 0.6rem;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--zen-grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500;
+      opacity: 0; animation: fadeUp 0.6s 0.15s forwards;
+    }
+
+    h1.hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+      margin-top: 1.8rem;
+      opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    }
+    h1.hero-title .italic { font-style: italic; }
+    h1.hero-title .grad {
+      background: var(--zen-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-style: italic;
+    }
+
+    .hero-sub {
+      margin-top: 1.4rem;
+      font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.8;
+      opacity: 0; animation: fadeUp 0.8s 0.45s forwards;
+    }
+
+    /* META ROW */
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 2.5rem;
+      margin-top: 3.5rem; padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .meta-item {}
+    .meta-label {
+      font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.3rem;
+    }
+    .meta-value { font-size: 0.88rem; font-weight: 400; color: var(--text); }
+
+    /* HERO IMAGE */
+    .hero-image-wrap {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding: 0 clamp(3.5rem, 8vw, 10rem);
+      opacity: 0; animation: fadeUp 0.9s 0.75s forwards;
+    }
+    .hero-image-inner {
+      width: 100%;
+      background: linear-gradient(135deg, #e6f4f0, #d4ece6);
+      border: 1px solid #c0ddd6;
+      overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .hero-image-inner img {
+      width: 100%; height: auto; display: block;
+    }
+    .hero-image-caption {
+      font-family: 'Fraunces', serif;
+      font-style: italic; font-size: 0.9rem;
+      color: var(--green); opacity: 0.75;
+      padding: 1rem 0 1.2rem;
+      text-align: center;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    /* CTA */
+    .hero-cta {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding: 0 clamp(3.5rem, 8vw, 10rem);
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn-zen {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--zen-grad); color: #fff;
+      padding: 0.8rem 1.8rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
+      text-decoration: none; border: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-zen:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--text);
+      padding: 0.8rem 1.8rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.05em;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s; margin-left: 1rem;
+    }
+    .btn-ghost:hover { border-color: var(--text); transform: translateY(-2px); }
+
+    /* SECTION WRAPPER */
+    .section {
+      max-width: 1200px; margin: 0 auto;
+      padding: 6rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .section + .section { padding-top: 0; }
+
+    .section-label {
+      font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; color: var(--green);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300; line-height: 1.2; letter-spacing: -0.015em;
+      margin-bottom: 1.5rem;
+    }
+    .section-title .italic { font-style: italic; }
+    .section-body {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.9; max-width: 680px;
+    }
+    .section-body p { margin-bottom: 1.2rem; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 1200px; margin: 0 auto;
+    }
+    .divider-full {
+      border: none; border-top: 1px solid var(--border);
+    }
+
+    /* TWO-COL */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .two-col-wide {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: start;
+    }
+
+    /* HIGHLIGHT QUOTE */
+    .pull-quote {
+      border-left: 2px solid var(--green-light);
+      padding: 1.2rem 1.8rem;
+      margin: 2rem 0;
+      background: linear-gradient(135deg, rgba(74,158,138,0.04), transparent);
+    }
+    .pull-quote p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.15rem; line-height: 1.6;
+      color: var(--text); margin: 0;
+    }
+    .pull-quote cite {
+      display: block; margin-top: 0.6rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); font-style: normal;
+    }
+
+    /* STAT CARDS */
+    .stat-row {
+      display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem;
+    }
+    .stat-card {
+      flex: 1 1 160px;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(74,158,138,0.06), rgba(124,196,178,0.08));
+      border: 1px solid rgba(74,158,138,0.2);
+    }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2.5rem; font-weight: 300; line-height: 1;
+      background: var(--zen-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-desc {
+      font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.5;
+    }
+
+    /* QUESTION CARDS */
+    .question-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
+    .question-item {
+      padding: 1.2rem 1.4rem;
+      background: linear-gradient(135deg, rgba(74,158,138,0.06), rgba(124,196,178,0.04));
+      border: 1px solid rgba(74,158,138,0.2);
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .question-item:hover { border-color: var(--green-light); transform: translateX(4px); }
+    .q-marker {
+      font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--zen-grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500; padding-top: 0.25rem;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .q-text { font-size: 0.88rem; color: var(--text); line-height: 1.75; font-weight: 300; }
+
+    /* PRINCIPLE CARDS */
+    .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .principle-card {
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .principle-card:hover { border-color: var(--green-light); transform: translateY(-3px); }
+    .principle-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .principle-name {
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.02em;
+      margin-bottom: 0.5rem; color: var(--text);
+    }
+    .principle-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+
+    /* PROCESS TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
+    .timeline-item {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 2rem; padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-item:first-child { border-top: 1px solid var(--border); }
+    .timeline-step {
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--green); font-weight: 500; padding-top: 0.2rem;
+    }
+    .timeline-content {}
+    .timeline-title { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text); }
+    .timeline-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* BEFORE/AFTER */
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .ba-card {
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+    }
+    .ba-label {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      font-weight: 500; margin-bottom: 1rem;
+    }
+    .ba-label.before { color: var(--muted); }
+    .ba-label.after { color: var(--green); }
+    .ba-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .ba-card li {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+      padding-left: 1rem; position: relative;
+    }
+    .ba-card li::before {
+      content: '—'; position: absolute; left: 0; color: var(--border);
+    }
+    .ba-card.after-card li::before { color: var(--green-light); }
+
+    /* INSIGHT PILLS */
+    .insight-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
+    .insight-pill {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(74,158,138,0.3);
+      background: rgba(74,158,138,0.05);
+      font-size: 0.78rem; color: var(--text); letter-spacing: 0.02em;
+    }
+
+    /* TINTED BLOCK */
+    .tinted-block {
+      background: linear-gradient(135deg, #e8f5f2, #f0faf8);
+      border: 1px solid #c5e0da;
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .tinted-block .section { padding: 0; max-width: 100%; }
+
+    /* OUTCOME CARD */
+    .outcome-box {
+      border: 1px solid var(--green-light);
+      padding: 2rem 2.5rem;
+      background: linear-gradient(135deg, rgba(74,158,138,0.06), rgba(124,196,178,0.06));
+      margin-top: 2rem;
+    }
+    .outcome-box p { font-size: 0.92rem; color: var(--muted); line-height: 1.9; margin-bottom: 0.8rem; }
+    .outcome-box p:last-child { margin-bottom: 0; }
+
+    /* TAKEAWAY */
+    .takeaway {
+      background: var(--text);
+      color: var(--bg);
+      padding: 5rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .takeaway .section-label { color: var(--green-light); }
+    .takeaway .section-title { color: var(--bg); }
+    .takeaway .section-body { color: rgba(247,244,239,0.65); max-width: 720px; }
+    .takeaway .section-body p { margin-bottom: 1.2rem; }
+
+    /* LEARN CARDS */
+    .learn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .learn-card { padding: 1.8rem; border: 1px solid rgba(247,244,239,0.12); }
+    .learn-card:hover { border-color: rgba(124,196,178,0.4); }
+    .learn-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem; font-weight: 300;
+      background: var(--zen-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .learn-title { font-size: 0.88rem; font-weight: 500; color: var(--bg); margin-bottom: 0.5rem; }
+    .learn-desc { font-size: 0.82rem; color: rgba(247,244,239,0.55); line-height: 1.7; }
+
+    /* NAV PREV/NEXT */
+    .case-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+    }
+    .case-nav-link {
+      display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none;
+    }
+    .case-nav-link .nav-dir {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .case-nav-link .nav-title {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 1.1rem; color: var(--text); font-weight: 300;
+      transition: color 0.2s;
+    }
+    .case-nav-link:hover .nav-title { color: var(--green); }
+    .case-nav-link.right { text-align: right; }
+
+    /* FOOTER */
+    footer {
+      padding: 1.8rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.73rem; color: var(--muted); letter-spacing: 0.01em;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 0; }
+      .hero-image-wrap { padding: 0 1.5rem; margin: 2.5rem auto 0; }
+      .hero-cta { padding: 0 1.5rem; margin: 1.5rem auto 0; }
+      .section { padding: 4rem 1.5rem; }
+      .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 2.5rem; }
+      .principles { grid-template-columns: 1fr 1fr; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .learn-grid { grid-template-columns: 1fr; }
+      .tinted-block { padding: 3rem 1.5rem; }
+      .takeaway { padding: 4rem 1.5rem; }
+      .case-nav { padding: 2.5rem 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .principles { grid-template-columns: 1fr; }
+      .stat-row { flex-direction: column; }
+      .meta-row { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;">
+      <svg style="height:32px;width:auto;display:block;" width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.7966 118.516C30.1452 118.516 21.4422 116.02 14.6877 111.029C8.19293 105.775 4.94556 97.2367 4.94556 85.4147C4.94556 73.8555 8.19293 65.3174 14.6877 59.8005C21.4422 54.2836 30.1452 51.5252 40.7966 51.5252H82.8825C83.4021 40.7541 87.299 32.8728 94.5731 27.8813C102.107 22.6271 112.369 20 125.358 20C138.348 20 148.35 22.6271 155.364 27.8813C162.638 32.8728 166.535 40.7541 167.054 51.5252H211.089C221.74 51.5252 230.313 54.2836 236.808 59.8005C243.563 65.3174 246.94 73.8555 246.94 85.4147C246.94 96.974 243.563 105.381 236.808 110.635C230.313 115.889 221.74 118.516 211.089 118.516H172.12L158.871 140.19L163.547 149.253C172.38 147.152 181.862 146.232 191.994 146.495C202.126 146.495 211.738 148.071 220.831 151.224C230.183 154.113 237.977 158.973 244.212 165.804C250.187 171.846 253.824 178.939 255.123 187.083C256.682 195.227 256.162 202.977 253.564 210.333C250.967 217.426 246.29 222.943 239.536 226.884C229.144 233.189 218.233 234.634 206.802 231.219C195.631 227.541 186.539 220.579 179.524 210.333C175.368 203.503 171.471 197.066 167.834 191.024C164.457 184.719 160.56 179.596 156.143 175.656C151.727 171.715 145.882 169.745 138.607 169.745C132.113 169.745 126.527 171.189 121.851 174.079C117.435 176.706 112.888 180.516 108.212 185.507C103.536 190.499 97.8204 196.41 91.0659 203.24C84.5712 210.071 75.9981 217.558 65.3467 225.702C55.4747 233.058 45.9924 236.473 36.8997 235.947C28.0669 235.159 20.533 232.007 14.298 226.49C8.06304 220.973 4.03629 214.537 2.21776 207.181C-0.380133 196.41 1.17861 187.083 6.89398 179.202C12.6094 171.058 21.9618 161.732 34.9513 151.224L74.3094 118.516H40.7966Z" fill="#FF00AA"/></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="playground.html">Playground</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <div class="hero">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:block;"><path d="M8.5 2L3.5 7L8.5 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span style="line-height:1; position:relative; top:3px;">Back to work</span>
+    </a>
+
+    <div class="hero-tag">Case Study — Eco-Centric Design</div>
+
+    <h1 class="hero-title">
+      <span class="italic">Zen Meditation —</span><br>
+      co-designing a meditative<br>
+      interface <span class="grad">with plants</span>
+    </h1>
+
+    <p class="hero-sub">
+      A biofeedback-driven meditation experience that bridges the gap between human and plant consciousness — exploring what it truly means to design <em>with</em> nature, not just for it.
+    </p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Product Designer</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Course</div>
+        <div class="meta-value">Eco-Centric Design: Interspecies Co-Creation</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Timeline</div>
+        <div class="meta-value">Spring 2025 – Present</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tools</div>
+        <div class="meta-value">Figma · Adobe Illustrator · p5.js · VS Code</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Outcome</div>
+        <div class="meta-value">UT Senior Design Capstone Exhibition 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO IMAGE -->
+  <div class="hero-image-wrap reveal">
+    <div class="hero-image-inner">
+      <img src="zen-hero.png" alt="Zen — A Shared Meditative Space for Human & Plant" />
+      <div class="hero-image-caption">Zen — A Shared Meditative Space for Human &amp; Plant</div>
+    </div>
+  </div>
+
+  <div class="hero-cta reveal">
+    <a href="https://chanseox.github.io/zen-app/" target="_blank" class="btn-zen">Try Zen ↗</a>
+    <a href="https://chanseo.notion.site/BioZen-Harmonious-25eac88faf714f1299447d8c5b1ef6e8" target="_blank" class="btn-ghost">Full Process on Notion ↗</a>
+  </div>
+
+  <hr class="divider" style="margin-top: 5rem;">
+
+  <!-- ─── OVERVIEW ─── -->
+  <div class="section">
+    <div class="two-col-wide">
+      <div class="reveal">
+        <div class="section-label">01 — Overview</div>
+        <h2 class="section-title">What if the <span class="italic">user</span> isn't only human?</h2>
+        <div class="section-body">
+          <p>Zen emerged from a design brief with a bold premise: study the <em>umwelt</em> — the perceptual world — of a non-human co-inhabitant and turn it into a creative work co-designed with that species. My co-designer? A plant.</p>
+          <p>Rather than designing a product <em>about</em> plants, I wanted to design <em>with</em> them. The result is a meditative interface that listens to plant bioelectrical signals in real time, translating their responses into a shared sensory environment that guides both the human and the plant through a mutual moment of stillness.</p>
+        </div>
+
+        <div class="pull-quote" style="margin-top: 2rem;">
+          <p>Zen challenges traditional user-centered design by asking what happens when we expand the definition of "user" to include all living things.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="section-label" style="margin-bottom: 1rem;">&nbsp;</div>
+        <div class="stat-row" style="flex-direction: column;">
+          <div class="stat-card">
+            <div class="stat-num">10+</div>
+            <div class="stat-desc">Participants in live meditation sessions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-desc">Species co-designing the experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-desc">UT Capstone Exhibition feature (2025)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── DESIGN BRIEF ─── -->
+  <div class="section">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">02 — Design Brief</div>
+        <h2 class="section-title">Problem and guiding questions</h2>
+        <div class="section-body">
+          <p>Professor Jiabao Li's Eco-Centric Design course challenged us to go beyond anthropocentric assumptions — to deeply study a non-human species and build something that genuinely honors its perspective.</p>
+          <p>I chose plants because they sit on the edges of our attention. We share spaces with them daily, yet rarely consider their agency or intelligence.</p>
+        </div>
+
+        <div style="margin-top: 1.8rem; padding: 1.4rem 1.6rem; border-left: 3px solid var(--green); background: linear-gradient(135deg, rgba(74,158,138,0.06), transparent);">
+          <div style="font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); font-weight: 500; margin-bottom: 0.6rem;">The Problem</div>
+          <p style="font-family: 'Fraunces', serif; font-size: 1.05rem; line-height: 1.65; color: var(--text);">As climate change accelerates and biodiversity collapses, humans continue to treat plants as backdrop, resources to consume rather than beings to coexist with. Technology mirrors this indifference, built entirely for human attention. What if we designed systems that fostered empathy toward the living world, starting with the plants we share our spaces with?</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="section-label" style="opacity: 0;">&nbsp;</div>
+        <div class="question-list">
+          <div class="question-item">
+            <span class="q-marker">HMW 01</span>
+            <span class="q-text">How can plants communicate with us through data and real-time interaction?</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">HMW 02</span>
+            <span class="q-text">What does empathy look like across species boundaries?</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">HMW 03</span>
+            <span class="q-text">How can we co-design systems that nurture both human and non-human wellbeing simultaneously?</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">HMW 04</span>
+            <span class="q-text">What does mindfulness feel like when it's shared between two different kinds of life?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── RESEARCH ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">03 — Research</div>
+      <h2 class="section-title">Plants can communicate — <span class="italic">we just don't listen</span></h2>
+    </div>
+
+    <div class="two-col" style="margin-top: 2.5rem;">
+      <div class="reveal">
+        <div class="section-body">
+          <p>Plants exhibit a form of electrophysiology — generating measurable bioelectric signals that shift in response to light, touch, and human presence. I studied plant neurobiology to understand how these signals propagate, giving me the foundation to translate plant responses into a real-time data stream.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="pull-quote">
+          <p>Plants don't just passively exist — they respond, adapt, and communicate. I wanted to make that invisible conversation visible.</p>
+        </div>
+
+        <div class="question-list" style="margin-top: 1.5rem;">
+          <div class="question-item">
+            <span class="q-marker">Finding</span>
+            <span class="q-text">Plants produce real-time bioelectric signals measurable through galvanic sensors attached to leaves and soil.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Finding</span>
+            <span class="q-text">Human presence — breathing, movement, sound — causes measurable shifts in plant bioelectric output.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Finding</span>
+            <span class="q-text">Biofeedback-driven visuals significantly increase mindfulness depth in existing meditation research.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 2.5rem;">
+      <img src="1775159573641_image.png" alt="Plants can communicate — bullied vs complimented plant experiment" style="width:100%; height:auto; display:block; border: 1px solid var(--border);" />
+      <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">An experiment showing how plants respond differently to negative vs. positive human speech — evidence that plants are sensitive to their environment and the beings around them.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── DESIGN PRINCIPLES ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">04 — Design Principles</div>
+      <h2 class="section-title">Designing <span class="italic">for</span> coexistence</h2>
+      <div class="section-body">
+        <p>Three principles anchored every design decision. Ensuring the final experience genuinely honored both the human and plant perspectives rather than using plant data as mere decoration.</p>
+      </div>
+    </div>
+
+    <div class="principles reveal" style="margin-top: 2rem;">
+      <div class="principle-card">
+        <div class="principle-icon">🌱</div>
+        <div class="principle-name">Interspecies Reciprocity</div>
+        <div class="principle-desc">Both species contribute equally to the experience. The plant's bioelectric signals shape what the human sees and hears. The human's presence and breathing affect the plant's environment.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">📡</div>
+        <div class="principle-name">Real-Time Biofeedback</div>
+        <div class="principle-desc">Plant responses are not pre-recorded or simulated — they're live data streams that create a truly unique experience every session.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🧘</div>
+        <div class="principle-name">Shared Mindfulness</div>
+        <div class="principle-desc">The interface guides both user types toward stillness — calming the human through visual and auditory design while creating a stable, quiet environment for the plant.</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 2.5rem;">
+      <img src="1775159721718_image.png" alt="Ego to Eco — shifting from human-centered to interspecies design" style="width:100%; height:auto; display:block; border: 1px solid var(--border);" />
+      <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">From EGO to ECO — a conceptual shift from human-at-the-top hierarchical thinking toward a circular, interspecies model of coexistence that informed Zen's design philosophy.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── PROCESS ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">05 — Process</div>
+      <h2 class="section-title">From instrument to <span class="italic">meditation partner</span></h2>
+      <div class="section-body">
+        <p>The design process was iterative and deeply experimental.</p>
+      </div>
+    </div>
+
+    <div class="timeline reveal">
+
+      <!-- Phase 01 with image -->
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 01</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Plant as Instrument</div>
+          <div class="timeline-desc">My first iteration explored using plants as musical instruments, translating their bioelectric signals into sound waves and visualizers. The concept was compelling but I quickly realized the plant was being treated as a tool rather than a co-creator. It was still a human-centered approach with a plant as prop.</div>
+          <div style="margin-top: 1.5rem;">
+            <img src="1775163380048_image.png" alt="First iteration: making music with plants" style="width:100%; height:auto; display:block; border: 1px solid var(--border);" />
+            <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">My first iteration was using plant leaves as piano keys and made a poster that I would hand around campus to allow others to create their own plant-based compositions. Then I moved to Garage band and iTunes music where I was able to create a song and view the visualizer.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 02</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Conceptual Pivot: Meditation as Dialogue</div>
+          <div class="timeline-desc">I shifted from performance to presence. Instead of extracting plant data for entertainment, what if we simply sat with it? The meditation frame recontextualized plant signals as a form of emotional communication rather than raw input to be processed.</div>
+        </div>
+      </div>
+
+      <!-- Phase 03 with image -->
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 03</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Prototyping in Code</div>
+          <div class="timeline-desc">I built the meditation software from scratch in VS Code using p5.js, HTML, CSS, and JavaScript, writing my own data pipeline to interpret sensor input and map it to visual parameters including breathing animations, color shifts, and ambient sound layers.</div>
+          <div style="margin-top: 1.5rem;">
+            <img src="1775163473725_image.png" alt="Coding the initial meditation software in VS Code with p5.js" style="width:100%; height:auto; display:block; border: 1px solid var(--border);" />
+            <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">Building the meditation interface with p5.js lib. and VS Code, and with color visulizer of frequencies.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 04</div>
+        <div class="timeline-content">
+          <div class="timeline-title">User Testing with 10+ Participants</div>
+          <div class="timeline-desc">Conducted live meditation sessions where participants meditated alongside a plant connected to the Zen interface. Gathered qualitative feedback on emotional response, interface clarity, and the sense of connection to the plant co-meditator.</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+            <div>
+              <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--border);">
+                <iframe src="https://www.youtube.com/embed/LxskJPMRDwc" title="Zen user testing session 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+              </div>
+              <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">User testing session 1</p>
+            </div>
+            <div>
+              <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--border);">
+                <iframe src="https://www.youtube.com/embed/pCIT22-dMlU" title="Zen user testing session 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+              </div>
+              <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">User testing session 2</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 05</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Refinement and Exhibition</div>
+          <div class="timeline-desc">Incorporated user feedback, refined the UI, and prepared the experience for the UT Senior Design Capstone Exhibition, where Zen was featured among the cohort's graduating projects.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TINTED — USER TESTING ─── -->
+  <div class="tinted-block">
+    <div class="section reveal">
+      <div class="section-label">06 — User Testing & Insights</div>
+      <h2 class="section-title">What 10+ meditators told me about <span class="italic">coexistence</span></h2>
+
+      <div class="two-col" style="margin-top: 2.5rem;">
+        <div>
+          <div class="section-body">
+            <p>I recruited 10+ participants for the Zen meditation experience. Sessions lasted around 10 minutes. I observed and then conducted brief semi-structured debriefs on their experience.</p>
+          </div>
+
+          <div class="question-list" style="margin-top: 1.5rem;">
+            <div class="question-item">
+              <span class="q-marker">Insight 01</span>
+              <span class="q-text">Participants felt genuine curiosity about the plant and wanted to learn more about the plant + its possible growth.</span>
+            </div>
+            <div class="question-item">
+              <span class="q-marker">Insight 02</span>
+              <span class="q-text">Hearing the natural frequency noise could be unpleasent or unnerving.</span>
+            </div>
+            <div class="question-item">
+              <span class="q-marker">Insight 03</span>
+              <span class="q-text">Users wanted to track their own growth alongside the plant's.</span>
+            </div>
+            <div class="question-item">
+              <span class="q-marker">Insight 04</span>
+              <span class="q-text">Because of the lack of visual feedback and user interface clarity, some participants felt confused about how to interact with the system.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pull-quote">
+            <p>"It was new and different to meditate with the thought of plants as a co-occupant. But it was nice and calming."</p>
+            <cite>— Zen participant feedback</cite>
+          </div>
+
+          <div class="ba-grid" style="margin-top: 1.5rem; grid-template-columns: 1fr;">
+            <div class="ba-card" style="border-color: rgba(74,158,138,0.3);">
+              <div class="ba-label after">What worked ✓</div>
+              <ul>
+                <li>Real-time plant presence created space for empathy</li>
+                <li>p5.js visuals were calming and responsive</li>
+                <li>The framing of "co-meditation" resonated emotionally</li>
+              </ul>
+            </div>
+            <div class="ba-card" style="margin-top: 1rem;">
+              <div class="ba-label before">What to improve →</div>
+              <ul>
+                <li>Camera + sensor calibration in variable lighting</li>
+                <li>Human UI interactions needed more affordance clarity</li>
+                <li>Shared growth tracking was a highly requested feature (possible space for data visualization)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── FINAL SOLUTION ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">07 — Final Solution</div>
+      <h2 class="section-title">The <span class="italic">hi-fidelity</span> experience</h2>
+      <div class="section-body">
+        <p>Introducing Zen Meditation. Web and mobile app where humans and plants co-exist in a shared space. I added journaling, emotion tracking, and shared growth visualization to deepen the human–plant relationship beyond a single session.</p>
+      </div>
+    </div>
+
+    <!-- Full-width video -->
+    <div class="reveal" style="margin-top: 3rem;">
+      <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--border);">
+        <iframe src="https://www.youtube.com/embed/V0qWQN4cQCI" title="Zen hi-fidelity walkthrough" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">Hi-fidelity prototype walkthrough</p>
+    </div>
+
+    <!-- Mobile screens: Mindful Journal -->
+    <div class="reveal" style="margin-top: 4rem;">
+      <div style="margin-bottom: 1.2rem;">
+        <div style="font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; color: var(--green); margin-bottom: 0.4rem;">Mobile Experience</div>
+        <div style="font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 300; font-style: italic; color: var(--text);">Mindful Journal Entries</div>
+      </div>
+      <div style="border: 1px solid var(--border); overflow: hidden;">
+        <img src="1775166319683_image.png" alt="Zen mobile experience — mindful journal entries with trigger and emotion selection" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+        <div>
+          <div style="font-size: 0.78rem; font-weight: 500; color: var(--text); margin-bottom: 0.35rem;">Shape Psychology</div>
+          <div style="font-size: 0.83rem; color: var(--muted); line-height: 1.7;">Users choose specific triggers they focused on during their session — each represented by icons rooted in shape psychology to create a visual shorthand for stress, relationships, and wellbeing. <a href="https://www.figma.com/design/e6VHmpi71gDx0TIWQcnBwD/Mapping-Emotions---Free-Design-Journal-Template--Community-?node-id=1-25&t=v0PUXhM0NkewHJDU-0" target="_blank">#Mappingemotions</a> </div>
+        </div>
+        <div>
+          <div style="font-size: 0.78rem; font-weight: 500; color: var(--text); margin-bottom: 0.35rem;">Color Psychology</div>
+          <div style="font-size: 0.83rem; color: var(--muted); line-height: 1.7;">Emotions and color are closely linked. The palette gives users a richer vocabulary for how they actually feel — moving beyond simple happy/sad binaries into nuanced emotional self-awareness.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile screens: Data Viz -->
+    <div class="reveal" style="margin-top: 4rem;">
+      <div style="margin-bottom: 1.2rem;">
+        <div style="font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; color: var(--green); margin-bottom: 0.4rem;">Mobile Experience</div>
+        <div style="font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 300; font-style: italic; color: var(--text);">Data Visualization</div>
+      </div>
+      <div style="border: 1px solid var(--border); overflow: hidden;">
+        <img src="1775166328178_image.png" alt="Zen mobile experience — plant growth tracking and shared data visualization" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+        <div>
+          <div style="font-size: 0.78rem; font-weight: 500; color: var(--text); margin-bottom: 0.35rem;">Tracking Growth</div>
+          <div style="font-size: 0.83rem; color: var(--muted); line-height: 1.7;">Users can log their plant's growth over time through photos alongside their own emotional data — building a living record of the parallel journeys of human and plant co-inhabitant.</div>
+        </div>
+        <div>
+          <div style="font-size: 0.78rem; font-weight: 500; color: var(--text); margin-bottom: 0.35rem;">Shared Data Visualization</div>
+          <div style="font-size: 0.83rem; color: var(--muted); line-height: 1.7;">A data layer connects human emotional states with plant growth metrics, visualizing their intertwined trajectories across sessions — making the relationship between meditator and plant tangible.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── OUTCOME ─── -->
+  <!-- (renumbered to 08) -->
+  <div class="section">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">08 — Outcome</div>
+        <h2 class="section-title">Featured at UT's <span class="italic">Senior Design Capstone</span></h2>
+        <div class="section-body">
+          <p>Zen was featured at the University of Texas at Austin's Senior Design Capstone Exhibition in 2025 — a recognition of both the conceptual ambition and technical execution of the project.</p>
+          <p>The exhibition context amplified Zen's impact: visitors could sit with the plant and experience the interface live, many of them encountering the idea of plant intelligence for the first time.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="background: linear-gradient(135deg, #e6f4f0, #d4ece6); border: 1px solid #c0ddd6; aspect-ratio: 4/3; overflow: hidden;">
+              <img src="zen exhibition 1.png" alt="Zen at UT Capstone Exhibition" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+            </div>
+            <div style="background: linear-gradient(135deg, #e6f4f0, #d4ece6); border: 1px solid #c0ddd6; aspect-ratio: 4/3; overflow: hidden;">
+              <img src="zen exhibition 2.png" alt="Visitors experiencing Zen at the exhibition" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, #e6f4f0, #d4ece6); border: 1px solid #c0ddd6; aspect-ratio: 16/7; overflow: hidden;">
+            <img src="zen exhibition 3.png" alt="Zen plant interface at the Senior Design Capstone" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.style.display='none'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── NEXT STEPS ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">09 — Next Steps</div>
+      <h2 class="section-title">The conversation <span class="italic">continues</span></h2>
+      <div class="section-body">
+        <p>Zen is a living project. The next chapter focuses on deepening the interspecies dialogue through richer data and broader reach.</p>
+      </div>
+    </div>
+
+    <div class="principles reveal" style="margin-top: 2rem;">
+      <div class="principle-card">
+        <div class="principle-icon">📊</div>
+        <div class="principle-name">Shared Growth Visualization</div>
+        <div class="principle-desc">Build a data layer that tracks and visualizes both human and plant states over time — showing their shared growth across multiple meditation sessions.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🔄</div>
+        <div class="principle-name">Refined UX Flows</div>
+        <div class="principle-desc">Redesign the onboarding and session flows to better accommodate first-time users and varied plant sensor setups, reducing friction in setup.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🌍</div>
+        <div class="principle-name">Ecological Awareness</div>
+        <div class="principle-desc">Explore how Zen could connect to broader ecological awareness — linking personal meditation data to environmental health metrics in a user's local area.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TAKEAWAY ─── -->
+  <div class="takeaway">
+    <div class="section-label">10 — Project Takeaway</div>
+    <h2 class="section-title" style="font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 1.5rem; max-width: 700px;">Designing <em>with</em> nature opens a conversation technology rarely has.</h2>
+    <div class="section-body">
+      <p>Zen taught me that the most meaningful design questions come from expanding who we consider a stakeholder. When we design with nature rather than for convenience, we're forced to slow down, to listen, and to reconsider what interaction even means.</p>
+      <p>It also taught me that research, code, and empathy aren't separate disciplines — they're a single practice when you're designing at the edge of what's been done before.</p>
+    </div>
+
+    <div class="learn-grid">
+      <div class="learn-card reveal">
+        <div class="learn-num">01</div>
+        <div class="learn-title">Expand who counts as a user</div>
+        <div class="learn-desc">The most interesting design problems emerge when you include stakeholders who can't speak for themselves — and find ways to listen anyway.</div>
+      </div>
+      <div class="learn-card reveal reveal-delay-1">
+        <div class="learn-num">02</div>
+        <div class="learn-title">Code is a design tool</div>
+        <div class="learn-desc">Writing my own p5.js environment was inseparable from the design process — prototyping in code let me discover what was impossible to find in Figma.</div>
+      </div>
+      <div class="learn-card reveal reveal-delay-2">
+        <div class="learn-num">03</div>
+        <div class="learn-title">Technology can reconnect</div>
+        <div class="learn-desc">Zen showed that digital tools don't have to distance us from the natural world — designed thoughtfully, they can deepen our relationship to it.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE NAV -->
+  <div class="case-nav">
+    <a href="index.html" class="case-nav-link">
+      <span class="nav-dir">← Previous</span>
+      <span class="nav-title">Back to all work</span>
+    </a>
+    <a href="about.html" class="case-nav-link right">
+      <span class="nav-dir">Learn more →</span>
+      <span class="nav-title">About Chloe</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>Made with 💖 © Chloe Kim</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank">LinkedIn ↗</a>
+      <a href="https://cdn.prod.website-files.com/64faa4f35ee4b2cc4c7147c8/674f75d5652345d7f45b3412_Chloe%20Kim%20Design%20Resume.docx.pdf" target="_blank">Resume ↗</a>
+      <a href="/cdn-cgi/l/email-protection#610209000f12040e211415041900124f040514">Email ↗</a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Scroll progress + nav
+    const progressBar = document.getElementById('scrollProgress');
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+      navbar.classList.toggle('scrolled', scrollTop > 40);
+    });
+
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

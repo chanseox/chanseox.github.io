@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Chloe Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --bg2: #eee9e1;
+      --text: #1c1a17;
+      --muted: #8a8378;
+      --border: #ddd8cf;
+      --pink: #d98b7e;
+      --grad: linear-gradient(135deg, #c9526a, #e8957c);
+      --grad-text: linear-gradient(135deg, #c9526a, #d98b7e);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* SCROLL PROGRESS BAR */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--grad);
+      z-index: 9999;
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* GRAIN OVERLAY */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 128px;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem clamp(3.5rem, 8vw, 10rem);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.9);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem; color: var(--text);
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .nav-logo span { background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--muted); text-decoration: none; transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 1px; background: var(--grad);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after { transform: scaleX(1); }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 10rem 3.5rem 5rem;
+      max-width: 900px; margin: 0 auto;
+    }
+    .page-label {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500; margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+    }
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+      opacity: 0; animation: fadeUp 0.8s 0.25s forwards;
+    }
+    h1 .grad-word {
+      background: linear-gradient(135deg, #c9526a, #00B3FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-style: italic;
+    }
+    h1 .plain { font-style: italic; color: var(--text); -webkit-text-fill-color: var(--text); }
+    .page-sub {
+      margin-top: 1.5rem; font-size: 1.05rem; color: var(--muted);
+      max-width: 560px; line-height: 1.8;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    /* ABOUT BODY */
+    .about-body {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 3.5rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .about-text p {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.9; margin-bottom: 1.4rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-ctas { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--grad); color: #fff;
+      padding: 0.75rem 1.6rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.05em;
+      text-decoration: none; border: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--text);
+      padding: 0.75rem 1.6rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.05em;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--text); transform: translateY(-2px); }
+
+    /* EXPERIENCES */
+    .experiences-label {
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; color: #c9526a;
+      margin-bottom: 1.2rem;
+    }
+    .experience-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item {
+      display: flex; flex-direction: column;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:first-child { border-top: 1px solid var(--border); }
+    .exp-time {
+      font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.2rem;
+    }
+    .exp-place { font-size: 0.92rem; color: var(--text); }
+    .exp-place a {
+      color: var(--text); text-decoration: none; font-weight: 300;
+      position: relative; display: inline-block;
+      transition: color 0.2s;
+    }
+    .exp-place a::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 1px; background: linear-gradient(135deg, #c9526a, #00B3FF);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .exp-place a:hover { color: #c9526a; }
+    .exp-place a:hover::after { transform: scaleX(1); }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 900px; margin: 0 auto 5rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 1.8rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.73rem; color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .page-hero { padding: 8rem 1.5rem 3rem; }
+      .about-body { grid-template-columns: 1fr; gap: 3rem; padding: 0 1.5rem 5rem; }
+      footer { padding: 1.5rem; }
+    }
+    @media (max-width: 500px) {
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;"><svg style="height:32px;width:auto;display:block;" width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.7966 118.516C30.1452 118.516 21.4422 116.02 14.6877 111.029C8.19293 105.775 4.94556 97.2367 4.94556 85.4147C4.94556 73.8555 8.19293 65.3174 14.6877 59.8005C21.4422 54.2836 30.1452 51.5252 40.7966 51.5252H82.8825C83.4021 40.7541 87.299 32.8728 94.5731 27.8813C102.107 22.6271 112.369 20 125.358 20C138.348 20 148.35 22.6271 155.364 27.8813C162.638 32.8728 166.535 40.7541 167.054 51.5252H211.089C221.74 51.5252 230.313 54.2836 236.808 59.8005C243.563 65.3174 246.94 73.8555 246.94 85.4147C246.94 96.974 243.563 105.381 236.808 110.635C230.313 115.889 221.74 118.516 211.089 118.516H172.12L158.871 140.19L163.547 149.253C172.38 147.152 181.862 146.232 191.994 146.495C202.126 146.495 211.738 148.071 220.831 151.224C230.183 154.113 237.977 158.973 244.212 165.804C250.187 171.846 253.824 178.939 255.123 187.083C256.682 195.227 256.162 202.977 253.564 210.333C250.967 217.426 246.29 222.943 239.536 226.884C229.144 233.189 218.233 234.634 206.802 231.219C195.631 227.541 186.539 220.579 179.524 210.333C175.368 203.503 171.471 197.066 167.834 191.024C164.457 184.719 160.56 179.596 156.143 175.656C151.727 171.715 145.882 169.745 138.607 169.745C132.113 169.745 126.527 171.189 121.851 174.079C117.435 176.706 112.888 180.516 108.212 185.507C103.536 190.499 97.8204 196.41 91.0659 203.24C84.5712 210.071 75.9981 217.558 65.3467 225.702C55.4747 233.058 45.9924 236.473 36.8997 235.947C28.0669 235.159 20.533 232.007 14.298 226.49C8.06304 220.973 4.03629 214.537 2.21776 207.181C-0.380133 196.41 1.17861 187.083 6.89398 179.202C12.6094 171.058 21.9618 161.732 34.9513 151.224L74.3094 118.516H40.7966Z" fill="#FF00AA"/></svg></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="playground.html">Playground</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-label">About Me</div>
+    <h1><span class="plain">Digital sorcerer weaving together</span> <span class="grad-word">experiences</span> <span class="plain">for humans, animals, plants, and the mystical realm.</span></h1>
+  </div>
+
+  <div class="about-body">
+    <div class="about-text reveal">
+      <p>I have recently graduated from the <strong>University of Texas at Austin</strong> 🤘Hook'em!🤠 with a <strong>B.F.A in Design</strong> 🎨. I have a minor in <strong>Informatics</strong> ℹ️ with a concentration in human-computer interaction and user-experience research. I also love to code and have studied Computer Science under the <strong>Elements of Computing Certification</strong> 🧩 track at UT.</p>
+      <p>I am currently a research fellow at <strong>Ecocentric Future Lab</strong> 🐇 where I explore design opportunities between the human and non-human species. At LIMITS 2024 (linked below) I presented my project on Digital Degrowth 🍀, in which I explored designing a personalized rehabilitation ritual targeting smart phone addiction. Aside from my scholarly ventures my hobbies include illustrating, video gaming, reading, watching anime, eating nigiri's, and drinking boba!</p>
+
+      <div class="about-ctas">
+        <a href="https://cdn.prod.website-files.com/64faa4f35ee4b2cc4c7147c8/674f75d5652345d7f45b3412_Chloe%20Kim%20Design%20Resume.docx.pdf" target="_blank" class="btn-ghost">Resume ↗</a>
+        <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+        <a href="/cdn-cgi/l/email-protection#197a7175767c597c74787075377a7674" class="btn-ghost">Email ↗</a>
+      </div>
+    </div>
+
+    <div class="about-sidebar reveal" style="transition-delay:0.15s">
+      <div class="experiences-label">Check out my experiences below 👇</div>
+      <div class="experience-list">
+        <div class="exp-item">
+          <span class="exp-time">Summer 2024</span>
+          <span class="exp-place"><a href="https://www.workrise.com" target="_blank">Workrise ↗</a></span>
+        </div>
+        <div class="exp-item">
+          <span class="exp-time">Fall &amp; Spring 2024</span>
+          <span class="exp-place"><a href="https://www.gazelle.earth/" target="_blank">Gazelle Eco Solutions ↗</a></span>
+        </div>
+        <div class="exp-item">
+          <span class="exp-time">Summer 2023</span>
+          <span class="exp-place"><a href="https://www.heb.com" target="_blank">H-E-B Digital Intern ↗</a></span>
+        </div>
+        <div class="exp-item">
+          <span class="exp-place"><a href="https://computingwithinlimits.org/2024/papers/limits2024-ploehn-interaction-design.pdf" target="_blank">Computing Within Limits 2024 ↗</a></span>
+        </div>
+        <div class="exp-item">
+          <span class="exp-place"><a href="https://grizzledwarveteran23.itch.io/intertwined" target="_blank">Game Jam 2024 ↗</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Made with 💖 © Chloe Kim</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank">LinkedIn ↗</a>
+      <a href="https://cdn.prod.website-files.com/64faa4f35ee4b2cc4c7147c8/674f75d5652345d7f45b3412_Chloe%20Kim%20Design%20Resume.docx.pdf" target="_blank">Resume ↗</a>
+      <a href="/cdn-cgi/l/email-protection#197a7175767c597c74787075377a7674">Email ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    const progressBar = document.getElementById('scrollProgress');
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+      navbar.classList.toggle('scrolled', scrollTop > 40);
+    });
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workrise — Chloe Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --bg2: #eee9e1;
+      --bg3: #edf2f8;
+      --text: #1c1a17;
+      --muted: #8a8378;
+      --border: #ddd8cf;
+      --accent: #2e6fb4;
+      --accent-light: #6fa3d8;
+      --grad: linear-gradient(135deg, #1a56a0, #4a8fd4);
+      --grad-text: linear-gradient(135deg, #1a56a0, #4a8fd4);
+      --wr-grad: linear-gradient(135deg, #2e6fb4, #6fa3d8);
+      --wr-grad-text: linear-gradient(135deg, #1a56a0, #6fa3d8);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* SCROLL PROGRESS */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--wr-grad);
+      z-index: 9999; transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* GRAIN */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 128px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem clamp(3.5rem, 8vw, 10rem);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.9);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem; color: var(--text);
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--muted); text-decoration: none; transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 1px; background: var(--wr-grad);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem clamp(3.5rem, 8vw, 10rem) 0;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s; line-height: 1;
+      opacity: 0; animation: fadeUp 0.5s 0.05s forwards;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { transition: transform 0.2s; flex-shrink: 0; display: block; margin-top: 1px; }
+    .back-link:hover svg { transform: translateX(-3px); }
+
+    .hero-tag {
+      display: block;
+      margin-top: 0.6rem;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--wr-grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500;
+      opacity: 0; animation: fadeUp 0.6s 0.15s forwards;
+    }
+
+    h1.hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+      margin-top: 1.8rem;
+      opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    }
+    h1.hero-title .italic { font-style: italic; }
+    h1.hero-title .grad {
+      background: var(--wr-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-style: italic;
+    }
+
+    .hero-sub {
+      margin-top: 1.4rem;
+      font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.8;
+      opacity: 0; animation: fadeUp 0.8s 0.45s forwards;
+    }
+
+    /* META ROW */
+    .meta-row {
+      display: flex; flex-wrap: wrap; gap: 2.5rem;
+      margin-top: 3.5rem; padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .meta-label {
+      font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.3rem;
+    }
+    .meta-value { font-size: 0.88rem; font-weight: 400; color: var(--text); }
+
+    /* HERO IMAGE */
+    .hero-image-wrap {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding: 0 clamp(6rem, 15vw, 18rem);
+      opacity: 0; animation: fadeUp 0.9s 0.75s forwards;
+    }
+    .hero-image-inner {
+      width: 100%;
+      background: linear-gradient(135deg, #edf2f8, #dbe8f5);
+      border: 1px solid #c2d8ee;
+      overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .hero-image-inner img { width: 100%; height: auto; display: block; }
+    .hero-image-caption {
+      font-family: 'Fraunces', serif;
+      font-style: italic; font-size: 0.9rem;
+      color: var(--accent); opacity: 0.75;
+      padding: 1rem 0 1.2rem;
+      text-align: center;
+    }
+
+    /* CTA */
+    .hero-cta {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding: 0 clamp(3.5rem, 8vw, 10rem);
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--wr-grad); color: #fff;
+      padding: 0.8rem 1.8rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em;
+      text-decoration: none; border: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--text);
+      padding: 0.8rem 1.8rem;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.05em;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s; margin-left: 1rem;
+    }
+    .btn-ghost:hover { border-color: var(--text); transform: translateY(-2px); }
+
+    /* SECTION WRAPPER */
+    .section {
+      max-width: 1200px; margin: 0 auto;
+      padding: 6rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .section + .section { padding-top: 0; }
+
+    .section-label {
+      font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 500; color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300; line-height: 1.2; letter-spacing: -0.015em;
+      margin-bottom: 1.5rem;
+    }
+    .section-title .italic { font-style: italic; }
+    .section-body {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.9; max-width: 680px;
+    }
+    .section-body p { margin-bottom: 1.2rem; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    /* TWO-COL */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .two-col-wide {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: start;
+    }
+
+    /* HIGHLIGHT QUOTE */
+    .pull-quote {
+      border-left: 2px solid var(--accent-light);
+      padding: 1.2rem 1.8rem;
+      margin: 2rem 0;
+      background: linear-gradient(135deg, rgba(46,111,180,0.04), transparent);
+    }
+    .pull-quote p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.15rem; line-height: 1.6;
+      color: var(--text); margin: 0;
+    }
+    .pull-quote cite {
+      display: block; margin-top: 0.6rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); font-style: normal;
+    }
+
+    /* STAT CARDS */
+    .stat-row { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; }
+    .stat-card {
+      flex: 1 1 160px;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(46,111,180,0.06), rgba(111,163,216,0.08));
+      border: 1px solid rgba(46,111,180,0.2);
+    }
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2.5rem; font-weight: 300; line-height: 1;
+      background: var(--wr-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.5; }
+
+    /* QUESTION / INSIGHT CARDS */
+    .question-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
+    .question-item {
+      padding: 1.2rem 1.4rem;
+      background: linear-gradient(135deg, rgba(46,111,180,0.06), rgba(111,163,216,0.04));
+      border: 1px solid rgba(46,111,180,0.2);
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .question-item:hover { border-color: var(--accent-light); transform: translateX(4px); }
+    .q-marker {
+      font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--wr-grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500; padding-top: 0.25rem;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .q-text { font-size: 0.88rem; color: var(--text); line-height: 1.75; font-weight: 300; }
+
+    /* PRINCIPLE CARDS */
+    .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+    .principle-card {
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .principle-card:hover { border-color: var(--accent-light); transform: translateY(-3px); }
+    .principle-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+    .principle-name { font-size: 0.82rem; font-weight: 500; letter-spacing: 0.02em; margin-bottom: 0.5rem; color: var(--text); }
+    .principle-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+
+    /* PROCESS TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 2rem; }
+    .timeline-item {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 2rem; padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .timeline-item:first-child { border-top: 1px solid var(--border); }
+    .timeline-step {
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); font-weight: 500; padding-top: 0.2rem;
+    }
+    .timeline-title { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text); }
+    .timeline-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* BEFORE/AFTER */
+    .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+    .ba-card { padding: 1.8rem; border: 1px solid var(--border); }
+    .ba-label {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      font-weight: 500; margin-bottom: 1rem;
+    }
+    .ba-label.before { color: var(--muted); }
+    .ba-label.after { color: var(--accent); }
+    .ba-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .ba-card li {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+      padding-left: 1rem; position: relative;
+    }
+    .ba-card li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+    .ba-card.after-card li::before { color: var(--accent-light); }
+
+    /* TINTED BLOCK */
+    .tinted-block {
+      background: linear-gradient(135deg, #edf2f8, #f2f7fc);
+      border-top: 1px solid #c2d8ee;
+      border-bottom: 1px solid #c2d8ee;
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .tinted-block .section { padding: 0; max-width: 100%; }
+
+    /* TAKEAWAY */
+    .takeaway {
+      background: var(--text);
+      color: var(--bg);
+      padding: 5rem clamp(3.5rem, 8vw, 10rem);
+    }
+    .takeaway .section-label { color: var(--accent-light); }
+    .takeaway .section-title { color: var(--bg); }
+    .takeaway .section-body { color: rgba(247,244,239,0.65); max-width: 720px; }
+    .takeaway .section-body p { margin-bottom: 1.2rem; }
+
+    /* LEARN CARDS */
+    .learn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .learn-card { padding: 1.8rem; border: 1px solid rgba(247,244,239,0.12); }
+    .learn-card:hover { border-color: rgba(111,163,216,0.4); }
+    .learn-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem; font-weight: 300;
+      background: var(--wr-grad-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .learn-title { font-size: 0.88rem; font-weight: 500; color: var(--bg); margin-bottom: 0.5rem; }
+    .learn-desc { font-size: 0.82rem; color: rgba(247,244,239,0.55); line-height: 1.7; }
+
+    /* NAV PREV/NEXT */
+    .case-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+    }
+    .case-nav-link { display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none; }
+    .case-nav-link .nav-dir {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    }
+    .case-nav-link .nav-title {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 1.1rem; color: var(--text); font-weight: 300;
+      transition: color 0.2s;
+    }
+    .case-nav-link:hover .nav-title { color: var(--accent); }
+    .case-nav-link.right { text-align: right; }
+
+    /* FOOTER */
+    footer {
+      padding: 1.8rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.73rem; color: var(--muted); letter-spacing: 0.01em;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 0; }
+      .hero-image-wrap { padding: 0 1.5rem; margin: 2.5rem auto 0; }
+      .hero-cta { padding: 0 1.5rem; margin: 1.5rem auto 0; }
+      .section { padding: 4rem 1.5rem; }
+      .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 2.5rem; }
+      .principles { grid-template-columns: 1fr 1fr; }
+      .ba-grid { grid-template-columns: 1fr; }
+      .learn-grid { grid-template-columns: 1fr; }
+      .tinted-block { padding: 3rem 1.5rem; }
+      .takeaway { padding: 4rem 1.5rem; }
+      .case-nav { padding: 2.5rem 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .principles { grid-template-columns: 1fr; }
+      .stat-row { flex-direction: column; }
+      .meta-row { gap: 1.5rem; }
+    }
+
+    /* LIGHTBOX */
+    .lightbox-trigger { cursor: zoom-in; display: block; position: relative; }
+    .lightbox-trigger::after {
+      content: '⤢';
+      position: absolute; top: 0.6rem; right: 0.6rem;
+      background: rgba(28,26,23,0.55); color: #fff;
+      font-size: 0.75rem; width: 1.8rem; height: 1.8rem;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .lightbox-trigger:hover::after { opacity: 1; }
+    .lightbox-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(28,26,23,0.88);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox-overlay.open { opacity: 1; pointer-events: all; }
+    .lightbox-overlay img {
+      max-width: 90vw; max-height: 88vh;
+      width: auto; height: auto;
+      display: block;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      transform: scale(0.95); transition: transform 0.3s ease;
+    }
+    .lightbox-overlay.open img { transform: scale(1); }
+    .lightbox-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      color: #fff; font-size: 1.5rem; cursor: pointer;
+      width: 2.5rem; height: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.25);
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;">
+      <svg style="height:32px;width:auto;display:block;" width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.7966 118.516C30.1452 118.516 21.4422 116.02 14.6877 111.029C8.19293 105.775 4.94556 97.2367 4.94556 85.4147C4.94556 73.8555 8.19293 65.3174 14.6877 59.8005C21.4422 54.2836 30.1452 51.5252 40.7966 51.5252H82.8825C83.4021 40.7541 87.299 32.8728 94.5731 27.8813C102.107 22.6271 112.369 20 125.358 20C138.348 20 148.35 22.6271 155.364 27.8813C162.638 32.8728 166.535 40.7541 167.054 51.5252H211.089C221.74 51.5252 230.313 54.2836 236.808 59.8005C243.563 65.3174 246.94 73.8555 246.94 85.4147C246.94 96.974 243.563 105.381 236.808 110.635C230.313 115.889 221.74 118.516 211.089 118.516H172.12L158.871 140.19L163.547 149.253C172.38 147.152 181.862 146.232 191.994 146.495C202.126 146.495 211.738 148.071 220.831 151.224C230.183 154.113 237.977 158.973 244.212 165.804C250.187 171.846 253.824 178.939 255.123 187.083C256.682 195.227 256.162 202.977 253.564 210.333C250.967 217.426 246.29 222.943 239.536 226.884C229.144 233.189 218.233 234.634 206.802 231.219C195.631 227.541 186.539 220.579 179.524 210.333C175.368 203.503 171.471 197.066 167.834 191.024C164.457 184.719 160.56 179.596 156.143 175.656C151.727 171.715 145.882 169.745 138.607 169.745C132.113 169.745 126.527 171.189 121.851 174.079C117.435 176.706 112.888 180.516 108.212 185.507C103.536 190.499 97.8204 196.41 91.0659 203.24C84.5712 210.071 75.9981 217.558 65.3467 225.702C55.4747 233.058 45.9924 236.473 36.8997 235.947C28.0669 235.159 20.533 232.007 14.298 226.49C8.06304 220.973 4.03629 214.537 2.21776 207.181C-0.380133 196.41 1.17861 187.083 6.89398 179.202C12.6094 171.058 21.9618 161.732 34.9513 151.224L74.3094 118.516H40.7966Z" fill="#FF00AA"/></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="playground.html">Playground</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <div class="hero">
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:block;"><path d="M8.5 2L3.5 7L8.5 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span style="line-height:1; position:relative; top:3px;">Back to work</span>
+    </a>
+
+    <div class="hero-tag">Case Study — Product Design Internship</div>
+
+    <h1 class="hero-title">
+      <span class="italic">Workrise —</span><br>
+      designing the vendor profile<br>
+      <span class="grad">experience</span>
+    </h1>
+
+    <p class="hero-sub">
+      Project focused on improving how vendor users manage, showcase, and find meaning in their profiles. Allowing user profiles to stand out and win more work.
+    </p>
+
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">Product Design Intern</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Company</div>
+        <div class="meta-value">Workrise (now known as Rigup)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Timeline</div>
+        <div class="meta-value">Summer 2024</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tools</div>
+        <div class="meta-value">Figma · Dovetail · GitHub · Hex</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Team</div>
+        <div class="meta-value">Chuck (Mentor) · Anna (Manager) · Raveen (Eng) · Mitch (PM)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO IMAGE -->
+  <div class="hero-image-wrap">
+    <div class="hero-image-inner">
+      <img src="workrise hero.png" alt="Workrise vendor profile redesign" />
+      <div class="hero-image-caption">Workrise — Vendor Profile Redesign, Summer 2024</div>
+    </div>
+  </div>
+
+  <hr class="divider" style="margin-top: 5rem;">
+
+  <!-- ─── OVERVIEW ─── -->
+  <div class="section">
+    <div class="two-col-wide">
+      <div class="reveal">
+        <div class="section-label">01 — Overview</div>
+        <h2 class="section-title">Vendors couldn't find <span class="italic">meaning</span> in their profiles</h2>
+        <div class="section-body">
+          <p>Workrise connects clients and vendors in the skilled trades and energy sector — streamlining everything from sourcing to payments. But despite the platform's reach, vendors were disengaged from a core part of the experience: their own profiles.</p>
+          <p>During my time at Workrise, I conducted problem discovery which allowed me to investigate why vendor users found it difficult to manage their profiles, and to design solutions that would make the experience more meaningful, personalized, and effective at showcasing what makes each vendor unique.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="section-label" style="margin-bottom: 1rem;">&nbsp;</div>
+        <div class="stat-row" style="flex-direction: column;">
+          <div class="stat-card">
+            <div class="stat-num">3</div>
+            <div class="stat-desc">Core problem areas identified across vendor experience</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">3</div>
+            <div class="stat-desc">Design hypotheses tested through mid-fi and hi-fi iterations</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-desc">Live user testing session with a Sales Engineer at DXP Enterprises</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── ABOUT WORKRISE ─── -->
+  <div class="section">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">02 — About Workrise</div>
+        <h2 class="section-title">A platform built for <span class="italic">the field</span></h2>
+        <div class="section-body">
+          <p>Workrise is an operations platform for the skilled trades and energy industry. It connects clients with vendors, streamlines field operations, and handles everything from sourcing and staffing to bid management and payments.</p>
+          <p>Its core products include vendor management, staffing and payroll, and bid management — making it an end-to-end solution for companies that rely on a distributed workforce to get work done.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="section-label" style="opacity:0;">&nbsp;</div>
+        <img src="about workrise.png" alt="Workrise platform overview" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border);" />
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── DESIGN BRIEF ─── -->
+  <div class="section">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="section-label">03 — Design Brief</div>
+        <h2 class="section-title">How might we improve vendor profiles?</h2>
+        <div class="section-body">
+          <p>This prompt opened up a design challenge centered on improving an existing experience. The goal was to identify where the current vendor profile fell short and produce impactful design decisions that would help vendors better represent themselves on the platform.</p>
+        </div>
+
+        <div style="margin-top: 1.8rem; padding: 1.4rem 1.6rem; border-left: 3px solid var(--accent); background: linear-gradient(135deg, rgba(46,111,180,0.06), transparent);">
+          <div style="font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: 0.6rem;">The Problem</div>
+          <p style="font-family: 'Fraunces', serif; font-size: 1.05rem; line-height: 1.65; color: var(--text);">Vendor users found it difficult to find meaning in managing their profile. Opportunities existed to improve existing features, expand educational reminders, and understand competitors to explore additional personalization features.</p>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="section-label" style="opacity:0;">&nbsp;</div>
+        <div class="question-list">
+          <div class="question-item">
+            <span class="q-marker">Problem 01</span>
+            <span class="q-text">The visual hierarchy of information is confusing — users don't know where to focus or what matters most.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Problem 02</span>
+            <span class="q-text">Poor communication of value in profile completion — vendors don't understand why maintaining their profile matters.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Problem 03</span>
+            <span class="q-text">Lack of customization and personalization — vendors can't truly differentiate their company or brand through the profile.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── RESEARCH ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">04 — Research</div>
+      <h2 class="section-title">Understanding the <span class="italic">current experience</span></h2>
+    </div>
+
+    <div class="two-col" style="margin-top: 2.5rem;">
+      <div class="reveal">
+        <div class="section-body">
+          <p>I began with a deep dive into the existing vendor profile experience, mapping where users were dropping off and where the design was failing to communicate value. Three distinct friction areas emerged that shaped the entire design direction.</p>
+        </div>
+
+        <div class="question-list" style="margin-top: 1.5rem;">
+          <div class="question-item">
+            <span class="q-marker">Finding 01</span>
+            <span class="q-text"><b>The Value of Vendor Network</b> Users weren't receiving enough information or reminders on the value of optimizing their profile for client consumption.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Finding 02</span>
+            <span class="q-text"><b>Vendor Differentiation</b> Current profile-building options didn't allow users to truly personalize their profile through data and branding.</span>
+          </div>
+          <div class="question-item">
+            <span class="q-marker">Finding 03</span>
+            <span class="q-text"><b>Vendor UX</b> The profile was functional but felt like a skeleton — not visually enticing, and it didn't encourage users to re-engage with their content.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-1">
+        <div class="pull-quote">
+          <p>Over <b>2000</b> vendors but only <b>273</b> have completed their profiles.</p>
+        </div>
+
+        <img src="workrise audit.png" alt="Current vendor profile experience audit" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); margin-top: 1.5rem;" />
+        <img src="workrise main points.png" alt="Workrise vendor profile main pain points" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); margin-top: 0.75rem;" />
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">Current state vendor profile — highlighting the key areas where visual hierarchy, value communication, and personalization fell short.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── COMPETITIVE ANALYSIS ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">05 — Competitive Analysis</div>
+      <h2 class="section-title">Market research</h2>
+      <div class="section-body">
+        <p>I audited competitor platforms to understand how they handled vendor and company profile experiences — identifying patterns in hierarchy, personalization, and value communication that Workrise could learn from and adapt.</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.5rem;">
+      <div class="reveal">
+        <img src="airbnb workrise.png" alt="Competitive analysis — platform 1" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+      </div>
+      <div class="reveal reveal-delay-1">
+        <img src="patreon workrise.png" alt="Competitive analysis — platform 2" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+      </div>
+      <div class="reveal reveal-delay-2">
+        <img src="bidout workrise.png" alt="Competitive analysis — platform 3" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── HYPOTHESES ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">06 — Hypotheses</div>
+      <h2 class="section-title">Solution discovery</h2>
+      <div class="section-body">
+        <p>Based on research findings, I formed three hypotheses to guide the design direction, each targeting one of the core problem areas.</p>
+      </div>
+    </div>
+
+    <div class="principles reveal" style="margin-top: 2rem;">
+      <div class="principle-card">
+        <div class="principle-icon">🔔</div>
+        <div class="principle-name">Intentional Reminders</div>
+        <div class="principle-desc">If we add more intentional reminders around profile maintenance, vendors will be more likely to re-engage with their profile data because they're getting consistent updates about the value of keeping it current.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">🎨</div>
+        <div class="principle-name">Differentiation Tools</div>
+        <div class="principle-desc">If we give vendors profile editing tools that enable them to showcase and differentiate their services, they'll be more likely to refine their profile information so it's more enticing to clients.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-icon">👁️</div>
+        <div class="principle-name">Visibility of Consumption</div>
+        <div class="principle-desc">If we more prominently display how vendor data is being consumed by clients, vendors may better understand how to position the information they want to share in their profile.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── PROCESS ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">07 — Process</div>
+      <h2 class="section-title">Sketches to wireframes to prototypes</h2>
+      <div class="section-body">
+        <p>The design process moved through rapid ideation, structured wireframing, and iterative refinement. I always tethered to user feedback and scoped to what was achievable within the internship timeline.</p>
+      </div>
+    </div>
+
+    <div class="timeline reveal">
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 01</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Sketching & Ideation</div>
+          <div class="timeline-desc">I explored a wide range of ideas through rough sketches, pushing on different ways to surface value, reorganize hierarchy, and introduce personalization. I love beginning my design projects with physical low-fidelity prototypes.</div>
+          <div style="margin-top: 1.5rem;">
+            <img src="sketches.png" alt="Early sketches for Workrise vendor profile" class="lightbox-trigger" onclick="openLightbox(this)" style="width:70%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+            <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">Early sketch explorations across profile hierarchy, reminder patterns, and personalization features.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 02</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Scope Decision</div>
+          <div class="timeline-desc">After early feedback, I decided to focus improvements within the profile space even though opportunities were discovered in the profile onboarding (FTUE) experience. Staying scoped kept the work actionable and shippable within the internship timeline. </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-step">Phase 03</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Mid-fi Wireframes</div>
+          <div class="timeline-desc">I moved into structured mid-fidelity wireframes to test layout hypotheses, information hierarchy, and the placement of new features. These were reviewed with my design mentor Chuck and PM Mitch before progressing to hi-fi.</div>
+          <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+            <img src="mid fi.png" alt="Mid-fi wireframes overview" class="lightbox-trigger" onclick="openLightbox(this)" style="width:75%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+              <img src="workrise success state.png" alt="Mid-fi wireframe — success state" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+              <img src="workrise visibility.png" alt="Mid-fi wireframe — visibility" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+              <img src="workrise 6 month mark.png" alt="Mid-fi wireframe — 6 month mark" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <img src="workrise reminder.png" alt="Mid-fi wireframe — reminder" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+              <img src="workrise email.png" alt="Mid-fi wireframe — email" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TINTED — USER TESTING ─── -->
+  <div class="tinted-block">
+    <div class="section reveal">
+      <div class="section-label">08 — User Testing & Insights</div>
+      <h2 class="section-title">Prototype testing</h2>
+
+      <div class="two-col" style="margin-top: 2.5rem;">
+        <div>
+          <div class="section-body">
+            <p>I conducted a live user testing session with Daniel, a Sales Engineer at DXP Enterprises who has experience building and managing profiles for a large-cap company. I walked him through two hi-fi screens and conducted a structured debrief.</p>
+          </div>
+
+          <img src="workrise user research.png" alt="User testing session with Daniel" style="width:100%; height:auto; display:block; border: 1px solid var(--border); margin-top: 1.5rem;" />
+
+          <div class="question-list" style="margin-top: 1.5rem;">
+            <div class="question-item">
+              <span class="q-marker">Insight 01</span>
+              <span class="q-text">Hierarchy matters: Daniel's top priority was "what services do I provide and how?" — followed by areas of operation and years in business.</span>
+            </div>
+            <div class="question-item">
+              <span class="q-marker">Insight 02</span>
+              <span class="q-text">Storytelling gap: Daniel wanted to see more pictures and videos — and questioned how those could increase visibility with clients.</span>
+            </div>
+            <div class="question-item">
+              <span class="q-marker">Insight 03</span>
+              <span class="q-text">Visibility confusion: Daniel experienced confusion with the intentions behind the info cards — context was missing for the design concept to land.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="pull-quote">
+            <p>"I want to control how I market my company. Pictures and videos — that's what makes a difference."</p>
+            <cite>— Daniel, Sales Engineer at DXP Enterprises</cite>
+          </div>
+
+          <div class="ba-grid" style="margin-top: 1.5rem; grid-template-columns: 1fr;">
+            <div class="ba-card" style="border-color: rgba(46,111,180,0.3);">
+              <div class="ba-label after">Design responses ✓</div>
+              <ul>
+                <li>Reorganize information hierarchy based on what users want to see first</li>
+                <li>Give vendors control over how they market themselves with pictures and videos</li>
+                <li>Present content with context so users understand the intention of each design element</li>
+              </ul>
+            </div>
+            <div class="ba-card" style="margin-top: 1rem;">
+              <div class="ba-label before">Remaining challenges →</div>
+              <ul>
+                <li>Balancing vendor personalization with platform-wide consistency</li>
+                <li>FTUE (first-time user experience) improvements remain out of scope for this phase</li>
+                <li>Measuring impact of profile improvements on actual client engagement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── FINAL SOLUTION ─── -->
+  <div class="section">
+    <div class="reveal">
+      <div class="section-label">09 — Final Solution</div>
+      <h2 class="section-title">The <span class="italic">hi-fidelity</span> designs</h2>
+      <div class="section-body">
+        <p>The final hi-fidelity designs addressed all three core problem areas — clearer hierarchy, richer personalization, and stronger communication of profile value — while staying within the scope of the profile space.</p>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem;">
+      <div class="reveal">
+        <img src="workrise hifi before and after.png" alt="Hi-fi vendor profile redesign" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; letter-spacing:0.04em;">Redesigned vendor profile — improved hierarchy, value communication, and personalization options.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="reveal">
+          <img src="workrise hifi 1.png" alt="Hi-fi screen — profile header and services" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+        </div>
+        <div class="reveal reveal-delay-1">
+          <img src="workrise hifi 2.png" alt="Hi-fi screen — areas of operation" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+        </div>
+        <div class="reveal reveal-delay-2">
+          <img src="workrise hifi 3.png" alt="Hi-fi screen — media and storytelling" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+        </div>
+        <div class="reveal reveal-delay-3">
+          <img src="workrise hifi 4.png" alt="Hi-fi screen — profile completion and reminders" class="lightbox-trigger" onclick="openLightbox(this)" style="width:100%; height:auto; display:block; border: 1px solid var(--border); cursor:zoom-in;" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TAKEAWAY ─── -->
+  <div class="takeaway">
+    <div class="section-label">10 — Project Takeaway</div>
+    <h2 class="section-title" style="font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 1.5rem; max-width: 700px;">What I learned</h2>
+    <div class="section-body">
+      <p>Working at Workrise taught me that design is never static and being open to change is what separates good work from great work.</p>
+      <p>I left the internship with a deeper appreciation for user research, empathy in design, and the satisfaction of seeing my work ship to production.</p>
+    </div>
+
+    <div class="learn-grid">
+      <div class="learn-card reveal">
+        <div class="learn-num">01</div>
+        <div class="learn-title">Embrace iterations</div>
+        <div class="learn-desc">There's always room for improvement. Being vulnerable in design reviews and open to change is how you grow.</div>
+      </div>
+      <div class="learn-card reveal reveal-delay-1">
+        <div class="learn-num">02</div>
+        <div class="learn-title">Research is a lifecycle</div>
+        <div class="learn-desc">I learned the full arc of user research — preparing, conducting, debriefing, and feeding insights back into iterations. Each step makes the next one better.</div>
+      </div>
+      <div class="learn-card reveal reveal-delay-2">
+        <div class="learn-num">03</div>
+        <div class="learn-title">Empathy takes time</div>
+        <div class="learn-desc">Understanding users doesn't happen instantly. Experience mapping, competitive analysis, and actual conversations all combine to let you design with real goals in mind.</div>
+      </div>
+      <div class="learn-card reveal reveal-delay-3">
+        <div class="learn-num">04</div>
+        <div class="learn-title">Meet expectations</div>
+        <div class="learn-desc">Seeing the work in production — and knowing it met both my own standards and my team's — was one of the most rewarding parts of the whole experience.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE NAV -->
+  <div class="case-nav">
+    <a href="index.html" class="case-nav-link">
+      <span class="nav-dir">← Previous</span>
+      <span class="nav-title">Back to all work</span>
+    </a>
+    <a href="zen.html" class="case-nav-link right">
+      <span class="nav-dir">Next project →</span>
+      <span class="nav-title">Zen Meditation</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>Made with 💖 © Chloe Kim</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank">LinkedIn ↗</a>
+      <a href="https://cdn.prod.website-files.com/64faa4f35ee4b2cc4c7147c8/674f75d5652345d7f45b3412_Chloe%20Kim%20Design%20Resume.docx.pdf" target="_blank">Resume ↗</a>
+      <a href="/cdn-cgi/l/email-protection#c2a1aaa3acb1a7ad82b7b6a7baa3b1eca7a6b7">Email ↗</a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Scroll progress + nav
+    const progressBar = document.getElementById('scrollProgress');
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+      navbar.classList.toggle('scrolled', scrollTop > 40);
+    });
+
+    // Reveal on scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+    <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <script>
+    function openLightbox(img) {
+      const overlay = document.getElementById('lightboxOverlay');
+      document.getElementById('lightboxImg').src = img.src;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== document.getElementById('lightboxOverlay') && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightboxOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({target: document.getElementById('lightboxOverlay')}); });
+  </script>
+</body>
+</html>
