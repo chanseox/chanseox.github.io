@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4TR0QEYVQF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4TR0QEYVQF');
+  </script>
+
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gazelle Ecosolutions — Chloe Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --bg2: #eee9e1;
+      --text: #1c1a17;
+      --muted: #8a8378;
+      --border: #ddd8cf;
+      --accent: #1a5c35;
+      --accent2: #2d8a52;
+      --accent-light: #e8f4ed;
+      --cream: #f2ede5;
+      --grad: linear-gradient(135deg, #1a5c35, #2d8a52);
+      --grad-text: linear-gradient(135deg, #1a5c35, #3aaa6a);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+    }
+
+    /* SCROLL PROGRESS */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0%; height: 2px;
+      background: var(--grad);
+      z-index: 9999;
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem clamp(3.5rem, 8vw, 10rem);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.92);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .nav-logo span { background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 1px; background: var(--grad);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* HERO */
+    .hero {
+      min-height: 92vh;
+      padding: 9rem clamp(3.5rem, 8vw, 10rem) 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #a8d5b5, transparent); top: -100px; right: -80px; }
+    .blob-2 { width: 300px; height: 300px; background: radial-gradient(circle, #c5e8c8, transparent); bottom: 50px; left: -60px; }
+
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500; margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.8rem;
+    }
+    h1 em { font-style: italic; color: var(--accent2); }
+
+    .hero-desc {
+      font-size: 1.05rem; color: var(--muted); line-height: 1.85; max-width: 500px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 2rem;
+      border-top: 1px solid var(--border); padding-top: 2rem;
+    }
+    .meta-item label {
+      font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 3px; font-weight: 500;
+    }
+    .meta-item span { font-size: 0.9rem; font-weight: 400; color: var(--text); }
+
+    /* Hero right - stat card */
+    .hero-stat-card {
+      background: var(--accent);
+      color: #fff;
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-stat-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08), transparent 60%);
+    }
+    .stat-row { display: flex; gap: 2rem; margin-bottom: 2rem; }
+    .stat-item { display: flex; flex-direction: column; gap: 4px; }
+    .stat-num {
+      font-family: 'Fraunces', serif; font-size: 3.2rem; line-height: 1;
+      font-weight: 300; letter-spacing: -0.03em; color: #fff;
+    }
+    .stat-pct { font-size: 1.4rem; opacity: 0.5; }
+    .stat-label {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      opacity: 0.55; font-weight: 400;
+    }
+    .stat-divider { width: 1px; background: rgba(255,255,255,0.15); align-self: stretch; }
+    .hero-quote {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 1.05rem; line-height: 1.7; opacity: 0.8;
+      border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem;
+    }
+
+    /* SECTIONS */
+    section { padding: 6rem clamp(3.5rem, 8vw, 10rem); border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-weight: 500; margin-bottom: 0.8rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300; letter-spacing: -0.02em; line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+    h2 em { font-style: italic; color: var(--accent2); }
+
+    h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem; font-weight: 400;
+      letter-spacing: -0.01em; margin-bottom: 0.8rem;
+    }
+
+    p { margin-bottom: 1.2rem; color: var(--muted); font-size: 0.98rem; line-height: 1.85; }
+    p:last-child { margin-bottom: 0; }
+    p strong { color: var(--text); font-weight: 500; }
+
+    /* TWO COL LAYOUT */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .two-col-wide { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: start; }
+
+    /* SCREEN SHOWCASE */
+    .screen-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .screen-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .screen-card img { width: 100%; display: block; }
+    .screen-caption {
+      padding: 1rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .screen-caption .cap-label {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent2); font-weight: 500; margin-bottom: 2px;
+    }
+    .screen-caption p {
+      font-size: 0.8rem; color: var(--muted); margin: 0; line-height: 1.5;
+    }
+    .screen-full { grid-column: span 2; }
+
+    /* PROCESS STEPS */
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-top: 3rem; }
+    .process-step {
+      background: var(--bg); padding: 2rem 1.5rem;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'Fraunces', serif; font-size: 2.5rem; font-weight: 300;
+      line-height: 1; letter-spacing: -0.03em;
+      background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 0.8rem; display: block;
+    }
+    .process-step h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    .process-step p { font-size: 0.82rem; margin: 0; }
+
+    /* CHALLENGE CALLOUT */
+    .callout {
+      background: var(--accent);
+      color: #fff;
+      padding: 3rem;
+      margin: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .callout::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.06), transparent);
+    }
+    .callout p { color: rgba(255,255,255,0.75); font-size: 1.1rem; line-height: 1.8; margin: 0; }
+    .callout p strong { color: #fff; }
+    .callout-label {
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 1rem; display: block; font-weight: 500;
+    }
+
+    /* INSIGHT CARDS */
+    .insight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+    .insight-card {
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      background: #fff;
+      position: relative;
+    }
+    .insight-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--grad);
+    }
+    .insight-card h3 { font-size: 0.95rem; margin-bottom: 0.6rem; }
+    .insight-card p { font-size: 0.82rem; margin: 0; }
+
+    /* OUTCOME METRICS */
+    .outcome-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 3rem 0; }
+    .outcome-item {
+      background: var(--bg); padding: 2.5rem 2rem; text-align: center;
+    }
+    .outcome-num {
+      font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 300;
+      line-height: 1; letter-spacing: -0.03em; display: block;
+      background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .outcome-label { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+    /* REFLECTION BLOCK */
+    .reflection {
+      background: var(--bg2);
+      padding: 3.5rem;
+      border-left: 3px solid var(--accent2);
+      margin-top: 3rem;
+    }
+    .reflection blockquote {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 1.3rem; line-height: 1.7; color: var(--text);
+      font-weight: 300;
+    }
+    .reflection-attr {
+      margin-top: 1.2rem; font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* BACK LINK */
+    .back-section {
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg2);
+    }
+    .back-link {
+      font-size: 0.8rem; color: var(--muted); text-decoration: none;
+      letter-spacing: 0.04em; transition: color 0.2s;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* FOOTER */
+    footer {
+      padding: 1.8rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.73rem; color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* TAG PILLS */
+    .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .tag {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
+      padding: 0.25rem 0.75rem; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--bg2); color: var(--text);
+    }
+    .tag-green { background: var(--accent-light); border-color: #9ecfb0; color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { grid-template-columns: 1fr; gap: 3rem; padding: 7rem 1.5rem 4rem; min-height: auto; }
+      .hero-stat-card { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 2.5rem; }
+      .screen-grid { grid-template-columns: 1fr; }
+      .screen-full { grid-column: span 1; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .insight-grid { grid-template-columns: 1fr; }
+      .outcome-grid { grid-template-columns: 1fr; }
+      .back-section { flex-direction: column; gap: 1rem; align-items: flex-start; }
+      footer { flex-direction: column; gap: 0.5rem; }
+    }
+    @media (max-width: 500px) {
+      .process-steps { grid-template-columns: 1fr; }
+    }
+
+    /* LIGHTBOX */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 8, 6, 0.92);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      backdrop-filter: blur(4px);
+    }
+    .lightbox-overlay.active { display: flex; }
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .lightbox-inner img {
+      max-width: 90vw;
+      max-height: 82vh;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    }
+    .lightbox-caption {
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      line-height: 1;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.2); }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .screen-card img { cursor: zoom-in; }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo"><span>Chloe</span> Kim</a>
+  <ul class="nav-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="playground.html">Playground</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div>
+    <div class="hero-eyebrow">Case study - Contract</div>
+    <h1>Designing for a <em>greener</em> planet, one dashboard at a time.</h1>
+    <p class="hero-desc">
+      At Gazelle Ecosolutions, I redesigned the desktop dashboard and onboarding experience for an environmental data platform used by carbon credit verifiers — translating complex satellite science into an interface that actually makes sense — to support real conservation work protecting the Kalahari and Okavango ecosystems.
+    </p>
+    <div class="hero-meta-grid">
+      <div class="meta-item"><label>Company</label><span>Gazelle Ecosolutions</span></div>
+      <div class="meta-item"><label>Role</label><span>Product Designer</span></div>
+      <div class="meta-item"><label>Duration</label><span>5 months</span></div>
+      <div class="meta-item"><label>Platform</label><span>Desktop Web</span></div>
+    </div>
+  </div>
+  <div class="hero-stat-card">
+    <div class="stat-row">
+      <div class="stat-item">
+        <span class="stat-num">30<span class="stat-pct">%</span></span>
+        <span class="stat-label">Reduction in onboarding time</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">35<span class="stat-pct">%</span></span>
+        <span class="stat-label">Faster dev time via UI kit</span>
+      </div>
+    </div>
+    <p class="hero-quote">"Translating complex environmental data into user-friendly interfaces that contribute to a more intuitive user experience."</p>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="two-col-wide">
+    <div>
+      <div class="section-label">01 — Overview</div>
+      <h2>An environmental data platform built for the people trying to save grasslands.</h2>
+      <p>Gazelle Ecosolutions is an applied science lab protecting Africa's rangelands — specifically the Kalahari and Okavango regions of Botswana — by building technologies at the intersection of remote sensing and ecology that power carbon and biodiversity credit projects. Their flagship product, the <strong>Gazelle Data Hub</strong>, enables their science team to run satellite-based land analysis algorithms — Landtrendr, CCDC, and SMA — to generate MRV (Measurement, Reporting, and Verification) reports that verify carbon sequestration for registry-grade carbon credits. Their first project, <strong>MODISA</strong> in Botswana's Kgalagadi region, was the first nature-based carbon project in the entire Kalahari — verified through the International Carbon Registry.</p>
+      <p>The problem: the platform was technically powerful but hard to use. Scientists were spending more time wrestling with the interface than doing science. With real conservation land — 17,000 hectares of Kalahari — on the line, the quality and speed of analysis runs directly affected the viability of carbon credit projects that fund Gazelle's entire conservation mission. Onboarding was a multi-session ordeal. And the codebase was growing without a shared component system, slowing down the engineering team.</p>
+      <p>I was brought in to design across <strong>two distinct products</strong> serving very different user types: the internal <strong>Gazelle Data Hub</strong> for Gazelle's own scientists, and a landowner self-service tool that let ranch owners register their land and receive carrying capacity recommendations — without needing a scientist to guide them.</p>
+    </div>
+    <div>
+      <div class="callout" style="margin-top: 0;">
+        <span class="callout-label">The challenge</span>
+        <p>Two user groups with completely different needs. Scientists needed a powerful spatial analysis platform. Ranch owners needed a guided tool that translated complex science into plain decisions. Both products lacked the clarity, structure, and shared design language to serve their users well.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">02 — Process</div>
+  <h2>From <em>research</em> to redesign in five months.</h2>
+  <p style="max-width: 680px;">Working within an agile team, I followed a research-first approach — understanding the mental models of scientists before touching any pixels.</p>
+  <div class="process-steps">
+    <div class="process-step">
+      <span class="step-num">01</span>
+      <h3>Heuristic Evaluation</h3>
+      <p>Audited the existing platform against Nielsen's 10 heuristics, identifying friction points across the onboarding flow and data analysis tools.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">02</span>
+      <h3>User Research</h3>
+      <p>Conducted interviews with internal scientists and client teams to map their workflows, mental models, and pain points when running satellite analyses.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">03</span>
+      <h3>Wireframing</h3>
+      <p>Created 40+ wireframes covering the full redesign — from the onboarding splash screen through each analysis tool to report generation.</p>
+    </div>
+    <div class="process-step">
+      <span class="step-num">04</span>
+      <h3>UI Kit + Handoff</h3>
+      <p>Built a component library in Figma aligned with the engineering team's patterns, reducing design-to-development friction by 35%.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH INSIGHTS -->
+<section id="research">
+  <div class="section-label">03 — Research Insights</div>
+  <h2>What we learned about how <em>scientists</em> think.</h2>
+  <p style="max-width: 680px;">Through user interviews and workflow mapping, three core insights shaped every design decision that followed.</p>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <h3>Context before configuration</h3>
+      <p>Scientists needed to understand <em>what</em> a tool does before being asked to configure it. The old flow dropped users directly into dense parameter inputs with no orientation. A welcome/intro screen with plain-language descriptions reduced confusion significantly.</p>
+    </div>
+    <div class="insight-card">
+      <h3>Progress visibility reduces anxiety</h3>
+      <p>Analysis runs take time. Without clear progress states — what's running, what's done, what's pending — users repeatedly re-triggered processes they thought had failed. Explicit task checklists and loading modals addressed this directly.</p>
+    </div>
+    <div class="insight-card">
+      <h3>Non-experts need guided steps, not open fields</h3>
+      <p>Ranch owners had no scientific background but were expected to input spectral parameters and emissions data. Replacing open-ended forms with option cards, confirmation screens, and plain-language labels removed the expertise barrier entirely.</p>
+    </div>
+    <div class="insight-card">
+      <h3>The map is the anchor</h3>
+      <p>Every analysis is tied to a geographic region. Users thought spatially first — they needed to see the map to orient themselves before making decisions. The three-panel layout (parameters → map → time series) matched how scientists naturally work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN SCREENS -->
+<section id="design">
+  <div class="section-label">04 — Design</div>
+  <h2>Two products, <em>two user types.</em></h2>
+  <p style="max-width: 680px; margin-bottom: 0;">The work covered two distinct tools — an internal science platform for Gazelle's team, and a self-service ranch onboarding product for landowner clients. Each required a completely different design approach.</p>
+
+  <div style="margin-top:2rem; margin-bottom:0.5rem;">
+    <div class="section-label" style="margin-bottom:0.5rem;">Product 01 — Internal Science Platform</div>
+    <h3 style="margin-bottom:0.8rem;">The Gazelle Data Hub: built for scientists running satellite analyses</h3>
+    <p style="max-width:680px; margin-bottom:2rem;">Used by Gazelle's internal team to run Landtrendr, CCDC, and SMA algorithms on satellite imagery — generating the MRV reports that underpin carbon credit verification for real projects like MODISA in the Kalahari.</p>
+  </div>
+  <div class="screen-grid">
+    <div class="screen-card screen-full">
+      <img src="gazelle-dashboard.png" alt="Gazelle Hub Dashboard" onerror="this.style.background='#1a5c35';this.style.height='320px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Hub Dashboard</div>
+        <p>Three core workflows surfaced as prominent tiles (Project Feasibility, MRV Generation, Data Hub) alongside a project sidebar showing real projects — MODISA and Kgalagadi Grasslands. Navigation reduced from 4+ clicks to 2.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-onboarding.png" alt="Gazelle splash screen" onerror="this.style.background='#2d4a35';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Branded Entry Point</div>
+        <p>Illustrated Kalahari savanna with a single Launch Hub CTA — sets brand tone and context before any complexity is introduced.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-landtrendr.png" alt="Landtrendr welcome screen" onerror="this.style.background='#2a5c45';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Tool Introduction — Landtrendr</div>
+        <p>Each algorithm opens with a plain-language description before any parameters appear. Context before configuration — a pattern consistent across all three tools.</p>
+      </div>
+    </div>
+    <div class="screen-card screen-full">
+      <img src="gazelle-analysis tool.png" alt="Three-panel analysis interface" onerror="this.style.background='#1c3a2c';this.style.height='360px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Analysis Tool — Three-Panel Layout</div>
+        <p>Parameters left, satellite map center, time series plots right. The spatial-first arrangement matches how scientists navigate data — see the geography first, then configure, then analyze output.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-checklist.png" alt="Task checklist" onerror="this.style.background='#243a2e';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Task Checklist</div>
+        <p>Dual-column layout (available vs. selected outputs) lets scientists curate exactly which maps and charts go into their MRV report. Category tabs prevent tool context-switching.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-generating.png" alt="Report generation loading state" onerror="this.style.background='#1a5c35';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Report Generation State</div>
+        <p>Named loading modals ("Generating SMA Report") give explicit feedback — replacing the prior ambiguity where users couldn't tell if a process had started.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:5rem; margin-bottom:0.5rem;">
+    <div class="section-label" style="margin-bottom:0.5rem;">Product 02 — Ranch Owner Self-Service Tool</div>
+    <h3 style="margin-bottom:0.8rem;">A guided onboarding experience for landowners with no scientific background</h3>
+    <p style="max-width:680px; margin-bottom:2rem;">Designed for ranch owners and land managers in Botswana — people who needed to register their land, input project data, and receive actionable recommendations without any scientific expertise required.</p>
+  </div>
+  <div class="screen-grid">
+    <div class="screen-card">
+      <img src="gazelle-login.png" alt="Login screen" onerror="this.style.background='#3d2a1a';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Login — Ranch Owner Entry</div>
+        <p>Social auth (Google, Facebook) alongside email/password, layered over the branded savanna illustration. Familiar login patterns reduce friction for non-technical users.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-project-info.png" alt="Project information confirmation" onerror="this.style.background='#2a3a28';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Project Information Review</div>
+        <p>All details — name, contact, address, methodology type — confirmed in one screen before committing. Edit or Confirm prevents costly data errors downstream.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-geo-match.png" alt="Geolocation match loading state" onerror="this.style.background='#f0f5f0';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Geolocation Matching</div>
+        <p>An illustrated loading state communicates that the system is searching for climate data within 100km of the ranch — reducing abandonment during longer processing times.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-bme-calculator.png" alt="Biomass Emissions Model calculator" onerror="this.style.background='#0d2b1c';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">BME Calculator</div>
+        <p>Live scientific equations update dynamically as users change parameter inputs. A complex scientific model made transparent and interactive for non-experts.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-define.png" alt="Gazelle" onerror="this.style.background='#f0f5f0';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Guided Decision Points</div>
+        <p>Scientific choices (pixel group criteria: Mean, Maximum, Median, Minimum) presented as large option cards with plain descriptions — no algorithm knowledge required.</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <img src="gazelle-report.png" alt="Livestock carrying capacity report" onerror="this.style.background='#1a4a28';this.style.height='260px';"/>
+      <div class="screen-caption">
+        <div class="cap-label">Carrying Capacity Report</div>
+        <p>The final output shows exactly how many sheep, kudu, horses, goats, and cows the ranch can safely support — alongside biomass figures. Science translated into a clear, actionable result.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="section-label">05 — Outcomes</div>
+  <h2>Measurable impact across the <em>platform.</em></h2>
+  <div class="outcome-grid">
+    <div class="outcome-item">
+      <span class="outcome-num">30%</span>
+      <span class="outcome-label">Reduction in onboarding time for new clients joining the platform</span>
+    </div>
+    <div class="outcome-item">
+      <span class="outcome-num">35%</span>
+      <span class="outcome-label">Faster development time through the new shared Figma UI kit</span>
+    </div>
+    <div class="outcome-item">
+      <span class="outcome-num">40+</span>
+      <span class="outcome-label">Wireframes produced for the Climate Action Reserve Grassland Protocol platform</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>Streamlined onboarding</h3>
+      <p>By restructuring the onboarding flow — starting with brand context, then tool introductions, then configuration — we reduced the time it took new clients to complete their first analysis run by 30%. Fewer support tickets, less hand-holding required from the Gazelle team.</p>
+      <p>The welcome screen pattern (context before configuration) became a reusable template applied consistently across all three algorithm tools — Landtrendr, CCDC, and SMA.</p>
+    </div>
+    <div>
+      <h3>A shared design language</h3>
+      <p>Working closely with the engineering team, I iterated on Gazelle's UI kit — standardizing components like cards, buttons, form inputs, loading states, and the three-panel analysis layout. This gave engineers a consistent set of patterns to build from, cutting design-to-code handoff time by 35%.</p>
+      <p>The Climate Action Reserve's U.S. Grassland Protocol platform — a separate but related product — benefited from the same component system, with 40+ wireframes delivered for that effort.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION -->
+<section id="reflection">
+  <div class="section-label">06 — Reflection</div>
+  <h2>What I took away from designing in <em>climate tech.</em></h2>
+  <div class="two-col">
+    <div>
+      <p>Designing for environmental scientists taught me something I hadn't fully internalized before: <strong>domain complexity doesn't go away — your job is to absorb it so the user doesn't have to.</strong> I spent the first few weeks just learning what NBR, CCDC, and spectral unmixing actually mean so I could translate them into interface patterns that made sense.</p>
+      <p>The three-panel layout came directly from watching how scientists move through their work — they think spatially first, then configure, then analyze the output. Matching the interface to that mental model wasn't a design insight, it was a research finding. That reinforced how much value comes from spending time with users before touching Figma.</p>
+      <p>Working with the engineering team on the UI kit also taught me how to be a better collaborator — learning to design components that were actually buildable, and iterating quickly when real constraints surfaced.</p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<div class="back-section">
+  <a href="index.html" class="back-link">← Back to all work</a>
+  <div class="tag-row" style="margin: 0;">
+    <span class="tag">Product Design</span>
+    <span class="tag">UX Research</span>
+    <span class="tag">Data Visualization</span>
+    <span class="tag">Design Systems</span>
+  </div>
+</div>
+
+<footer>
+  <span>Made with 💖 © Chloe Kim</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank">LinkedIn ↗</a>
+    <a href="https://drive.google.com/file/d/1SjDSq7AbvfkEc0EcZjWLGlEtlUB7uCuA/view?usp=sharing" target="_blank">Resume ↗</a>
+    <a href="mailto:chloekimx@gmail.com">Email ↗</a>
+  </div>
+</footer>
+
+<script>
+  const progressBar = document.getElementById('scrollProgress');
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+    navbar.classList.toggle('scrolled', scrollTop > 40);
+  });
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightboxDirect()">&#x2715;</button>
+  <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(event, -1)">&#8592;</button>
+  <button class="lightbox-nav lightbox-next" onclick="lightboxNav(event, 1)">&#8594;</button>
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="" alt=""/>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+</div>
+
+<script>
+  let lightboxImages = [];
+  let lightboxIndex = 0;
+
+  function initLightbox() {
+    const cards = document.querySelectorAll('.screen-card img');
+    lightboxImages = Array.from(cards).map(img => ({
+      src: img.src,
+      alt: img.alt,
+      caption: img.closest('.screen-card').querySelector('.cap-label') 
+                ? img.closest('.screen-card').querySelector('.cap-label').textContent 
+                : img.alt
+    }));
+    cards.forEach((img, i) => {
+      img.addEventListener('click', () => openLightbox(i));
+    });
+  }
+
+  function openLightbox(index) {
+    lightboxIndex = index;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateLightbox() {
+    const item = lightboxImages[lightboxIndex];
+    document.getElementById('lightbox-img').src = item.src;
+    document.getElementById('lightbox-img').alt = item.alt;
+    document.getElementById('lightbox-caption').textContent = item.caption;
+  }
+
+  function closeLightbox(e) {
+    if (e.target === document.getElementById('lightbox')) {
+      closeLightboxDirect();
+    }
+  }
+
+  function closeLightboxDirect() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function lightboxNav(e, dir) {
+    e.stopPropagation();
+    lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+    updateLightbox();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightboxDirect();
+    if (e.key === 'ArrowLeft') { lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length; updateLightbox(); }
+    if (e.key === 'ArrowRight') { lightboxIndex = (lightboxIndex + 1) % lightboxImages.length; updateLightbox(); }
+  });
+
+  document.addEventListener('DOMContentLoaded', initLightbox);
+</script>
+</body>
+</html>
