@@ -38,7 +38,7 @@
       top: 0; left: 0;
       width: 0%;
       height: 2px;
-      background: var(--grad);
+      background: #FF00AA;
       z-index: 9999;
       transition: width 0.05s linear;
       pointer-events: none;
@@ -79,7 +79,7 @@
     }
     .nav-links a::after {
       content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 1px; background: var(--grad);
+      height: 1px; background: #FF00AA;
       transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
     }
     .nav-links a:hover { color: var(--text); }
@@ -94,8 +94,7 @@
     }
     .page-label {
       font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-      background: var(--grad-text); -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent; background-clip: text;
+      color: #FF00AA; -webkit-text-fill-color: #FF00AA;
       font-weight: 500; margin-bottom: 1rem;
       opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
     }
@@ -106,7 +105,7 @@
       opacity: 0; animation: fadeUp 0.8s 0.25s forwards;
     }
     h1 .grad-word {
-      background: linear-gradient(135deg, #c9526a, #00B3FF);
+      background: linear-gradient(135deg, #FF00AA, #00B3FF);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       font-style: italic;
     }
@@ -150,13 +149,13 @@
       text-decoration: none; border: 1px solid var(--border);
       transition: border-color 0.2s, transform 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--text); transform: translateY(-2px); }
+    .btn-ghost:hover { border-color: #FF00AA; color: #FF00AA; transform: translateY(-2px); }
 
     /* EXPERIENCES */
     .experiences-label {
       font-family: 'Epilogue', sans-serif;
       font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
-      font-weight: 500; color: #c9526a;
+      font-weight: 500; color: #FF00AA;
       margin-bottom: 1.2rem;
     }
     .experience-list { display: flex; flex-direction: column; gap: 0; }
@@ -181,7 +180,7 @@
       height: 1px; background: linear-gradient(135deg, #c9526a, #00B3FF);
       transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
     }
-    .exp-place a:hover { color: #c9526a; }
+    .exp-place a:hover { color: #FF00AA; }
     .exp-place a:hover::after { transform: scaleX(1); }
 
     /* DIVIDER */
