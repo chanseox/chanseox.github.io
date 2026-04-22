@@ -453,6 +453,23 @@
     .lightbox-prev { left: 1.5rem; }
     .lightbox-next { right: 1.5rem; }
     .screen-card img { cursor: zoom-in; }
+    .case-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+      padding: 3rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+    }
+    .case-nav-link { display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none; }
+    .case-nav-link .nav-dir {
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    }
+    .case-nav-link .nav-title {
+      font-family: 'Fraunces', serif; font-style: italic;
+      font-size: 1.1rem; color: var(--text); font-weight: 300;
+      transition: color 0.2s;
+    }
+    .case-nav-link:hover .nav-title { color: var(--accent); }
+    .case-nav-link.right { text-align: right; }
   </style>
 </head>
 <body>
@@ -728,15 +745,17 @@
   </div>
 </section>
 
-<div class="back-section">
-  <a href="index.html" class="back-link">← Back to all work</a>
-  <div class="tag-row" style="margin: 0;">
-    <span class="tag">Product Design</span>
-    <span class="tag">UX Research</span>
-    <span class="tag">Data Visualization</span>
-    <span class="tag">Design Systems</span>
+  <!-- CASE NAV -->
+  <div class="case-nav">
+    <a href="workrise.html" class="case-nav-link">
+      <span class="nav-dir">← Previous</span>
+      <span class="nav-title">Workrise Profiles</span>
+    </a>
+    <a href="riot-accessibility.html" class="case-nav-link right">
+      <span class="nav-dir">Next →</span>
+      <span class="nav-title">Riot Games Audit</span>
+    </a>
   </div>
-</div>
 
 <footer>
   <span>Made with 💖 © Chloe Kim</span>
