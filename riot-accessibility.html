@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riot Games Accessibility Audit — Chloe Kim</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f2ec;
+    --accent: #c8401a;
+    --accent2: #1a4fc8;
+    --muted: #6b6760;
+    --rule: #d8d4cc;
+    --pass: #1a5c35;
+    --pass-bg: #e8f4ed;
+    --fail: #8c1a0e;
+    --fail-bg: #faeae8;
+    --warn: #7a4e0a;
+    --warn-bg: #fdf3e3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 48px;
+    height: 56px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 5vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+  }
+
+  .meta-item label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .meta-item span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Hero right — score card */
+  .hero-scorecard {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px;
+    position: relative;
+  }
+
+  .scorecard-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 40px;
+  }
+
+  .score-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 120px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+  }
+
+  .score-big span {
+    font-size: 40px;
+    opacity: 0.4;
+    vertical-align: super;
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 48px;
+  }
+
+  .score-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .score-item {
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .score-item .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .score-item .lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .score-item.pass .num { color: #6ee7a0; }
+  .score-item.fail .num { color: #f87171; }
+  .score-item.warn .num { color: #fbbf24; }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 80px 48px;
+    border-bottom: 1px solid var(--rule);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 64px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 16px;
+    margin-top: 48px;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p { color: var(--muted); margin-bottom: 16px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ─── METHODOLOGY ─── */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 48px;
+  }
+
+  .method-card {
+    background: var(--paper);
+    padding: 36px 32px;
+  }
+
+  .method-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .method-card h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .method-card p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ─── FINDINGS ─── */
+  .findings-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .finding {
+    display: grid;
+    grid-template-columns: 200px 1fr 120px;
+    gap: 0;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 2px;
+  }
+
+  .finding-criterion {
+    background: var(--paper);
+    padding: 24px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .criterion-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .criterion-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .finding-detail {
+    background: var(--paper);
+    padding: 24px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .finding-detail p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .finding-pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .page-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+  }
+
+  .page-tag.failed {
+    border-color: var(--fail);
+    color: var(--fail);
+    background: var(--fail-bg);
+  }
+
+  .finding-result {
+    background: var(--paper);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .result-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    font-weight: 500;
+  }
+
+  .result-badge.fail {
+    background: var(--fail-bg);
+    color: var(--fail);
+    border: 1px solid var(--fail);
+  }
+
+  .result-badge.pass {
+    background: var(--pass-bg);
+    color: var(--pass);
+    border: 1px solid var(--pass);
+  }
+
+  .result-badge.warn {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border: 1px solid var(--warn);
+  }
+
+  /* ─── HEURISTICS ─── */
+  .heuristic-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--rule);
+    margin-top: 48px;
+  }
+
+  .heuristic {
+    background: var(--paper);
+    padding: 32px;
+    position: relative;
+  }
+
+  .heuristic-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--rule);
+    line-height: 1;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+  }
+
+  .heuristic h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+
+  .heuristic p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .severity {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  .severity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .severity.high .severity-dot { background: var(--accent); }
+  .severity.high { color: var(--accent); }
+  .severity.medium .severity-dot { background: var(--warn); }
+  .severity.medium { color: var(--warn); }
+  .severity.low .severity-dot { background: var(--pass); }
+  .severity.low { color: var(--pass); }
+
+  /* ─── RECOMMENDATIONS ─── */
+  .rec-list {
+    counter-reset: rec;
+    margin-top: 48px;
+  }
+
+  .rec {
+    counter-increment: rec;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    margin-bottom: -1px;
+    position: relative;
+  }
+
+  .rec-num {
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    padding: 32px 0;
+  }
+
+  .rec::before {
+    content: counter(rec, decimal-leading-zero);
+    display: none;
+  }
+
+  .rec-body {
+    padding: 28px 32px;
+    border-left: 1px solid var(--rule);
+  }
+
+  .rec-body h4 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .rec-body p { font-size: 14px; }
+
+  .rec-priority {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid;
+    display: inline-block;
+    margin-top: 12px;
+  }
+
+  .rec-priority.critical {
+    color: var(--fail);
+    border-color: var(--fail);
+    background: var(--fail-bg);
+  }
+
+  .rec-priority.high {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: #fdf0ec;
+  }
+
+  .rec-priority.medium {
+    color: var(--warn);
+    border-color: var(--warn);
+    background: var(--warn-bg);
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 48px;
+  }
+
+  .conclusion-stat {
+    border-top: 3px solid var(--ink);
+    padding-top: 24px;
+  }
+
+  .conclusion-stat .big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .conclusion-stat .big.accent { color: var(--accent); }
+  .conclusion-stat .big.accent2 { color: var(--accent2); }
+
+  .conclusion-stat p { font-size: 14px; }
+
+  /* ─── PROGRESS BAR ─── */
+  .audit-bar {
+    height: 8px;
+    background: var(--rule);
+    margin-top: 48px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .bar-pass { background: #1a5c35; flex: 36; }
+  .bar-fail { background: var(--accent); flex: 7; }
+  .bar-warn { background: #d4a520; flex: 5; }
+  .bar-na { background: var(--rule); flex: 7; }
+
+  .bar-legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .bar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  a.back-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  a.back-link:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ─── FULL WIDTH WRAPPER ─── */
+  .full-width {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .full-width > section { border-bottom: none; }
+
+  /* ─── HERO FULL ─── */
+  .hero-wrap {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-bottom: none;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero > * {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero > *:nth-child(2) { animation-delay: 0.15s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 100px 24px 60px;
+      gap: 48px;
+    }
+
+    .hero-scorecard { padding: 32px; }
+    .score-big { font-size: 80px; }
+
+    section { padding: 60px 24px; }
+
+    .method-grid { grid-template-columns: 1fr; }
+    .heuristic-list { grid-template-columns: 1fr; }
+    .finding { grid-template-columns: 1fr; }
+    .finding-criterion, .finding-detail { border-right: none; border-bottom: 1px solid var(--rule); }
+    .conclusion-grid { grid-template-columns: 1fr; gap: 32px; }
+    .rec { grid-template-columns: 56px 1fr; }
+
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://chanseox.github.io/">← Chloe Kim</a>
+  <ul class="nav-links">
+    <li><a href="#methodology">Method</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#heuristics">Heuristics</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+<div class="hero">
+  <div>
+    <div class="hero-tag">WCAG 2.2 AA · Accessibility Evaluation</div>
+    <h1>Riot Games<br><em>Accessibility</em><br>Audit</h1>
+    <p class="hero-desc">A comprehensive WCAG 2.2 AA evaluation of riotgames.com, assessing 53 success criteria across four key pages to identify barriers for users with disabilities.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <label>Evaluator</label>
+        <span>Chloe Kim</span>
+      </div>
+      <div class="meta-item">
+        <label>Date</label>
+        <span>April 4, 2025</span>
+      </div>
+      <div class="meta-item">
+        <label>Standard</label>
+        <span>WCAG 2.2 Level AA</span>
+      </div>
+      <div class="meta-item">
+        <label>Pages Audited</label>
+        <span>4 pages sampled</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scorecard">
+    <div class="scorecard-title">Overall Conformance Score</div>
+    <div class="score-big">65<span>%</span></div>
+    <div class="score-label">36 of 53 criteria checked passed</div>
+    <div class="score-breakdown">
+      <div class="score-item pass">
+        <div class="num">36</div>
+        <div class="lbl">Passed</div>
+      </div>
+      <div class="score-item fail">
+        <div class="num">7</div>
+        <div class="lbl">Failed</div>
+      </div>
+      <div class="score-item warn">
+        <div class="num">3</div>
+        <div class="lbl">Cannot Tell</div>
+      </div>
+      <div class="score-item">
+        <div class="num">7</div>
+        <div class="lbl">Not Present</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="full-width">
+<section id="overview">
+  <div class="section-header">
+    <span class="section-num">00 — Overview</span>
+    <h2>About the Project</h2>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px;">
+    <div>
+      <h3>Website Scope</h3>
+      <p>Riot Games is the official website of Riot Games, the video game company behind titles like League of Legends and Valorant. It serves as a central hub for game news, esports information, user accounts, and customer support, with millions of users across diverse ability profiles.</p>
+      <p>The site targets a global gaming audience — a demographic that skews young but includes players with a wide range of visual, motor, and cognitive needs, many of whom may use assistive technologies.</p>
+    </div>
+    <div>
+      <h3>Evaluation Approach</h3>
+      <p>The audit followed the W3C WCAG-EM methodology, evaluating four representative pages: the <strong style="color: var(--ink); font-weight: 500;">Home</strong>, <strong style="color: var(--ink); font-weight: 500;">Who We Are</strong>, <strong style="color: var(--ink); font-weight: 500;">Work With Us</strong>, and <strong style="color: var(--ink); font-weight: 500;">News</strong> pages.</p>
+      <p>Tools used included the WAVE accessibility checker for automated detection of contrast issues and missing alt text, alongside manual keyboard navigation testing and visual inspection of the site's HTML structure.</p>
+    </div>
+  </div>
+
+  <div class="audit-bar" style="max-width: 800px; margin-top: 64px;">
+    <div class="bar-pass"></div>
+    <div class="bar-fail"></div>
+    <div class="bar-warn"></div>
+    <div class="bar-na"></div>
+  </div>
+  <div class="bar-legend">
+    <div class="bar-legend-item"><div class="legend-dot" style="background:#1a5c35"></div>36 Passed</div>
+    <div class="bar-legend-item"><div class="legend-dot" style="background:var(--accent)"></div>7 Failed</div>
+    <div class="bar-legend-item"><div class="legend-dot" style="background:#d4a520"></div>3 Cannot Tell / 2 Not Checked</div>
+    <div class="bar-legend-item"><div class="legend-dot" style="background:var(--rule)"></div>7 Not Present</div>
+  </div>
+</section>
+</div>
+
+<!-- METHODOLOGY -->
+<div class="full-width">
+<section id="methodology">
+  <div class="section-header">
+    <span class="section-num">01 — Methodology</span>
+    <h2>How the Audit Was Conducted</h2>
+  </div>
+
+  <p style="max-width: 640px;">The evaluation used a multi-method approach combining automated tooling with manual expert review, following the W3C Website Accessibility Conformance Evaluation Methodology (WCAG-EM).</p>
+
+  <div class="method-grid">
+    <div class="method-card">
+      <div class="method-num">Method 01</div>
+      <h4>Automated Analysis</h4>
+      <p>WAVE (Web Accessibility Evaluation Tool) was used to automatically flag missing alt text, contrast failures, structural issues, and ARIA problems across all four sample pages. Automated tools catch surface-level issues quickly but cannot assess context, meaning, or interaction quality.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-num">Method 02</div>
+      <h4>Manual Keyboard Testing</h4>
+      <p>Each page was navigated exclusively using a keyboard (Tab, Shift+Tab, Enter, Space, arrow keys) to verify focus order, keyboard traps, visible focus indicators, and whether all interactive elements were reachable without a pointing device.</p>
+    </div>
+    <div class="method-card">
+      <div class="method-num">Method 03</div>
+      <h4>WCAG Criterion Review</h4>
+      <p>All 55 WCAG 2.2 AA success criteria were reviewed against each sampled page. Each criterion was rated as Passed, Failed, Cannot Tell, Not Present, or Not Checked, with written observations documenting the reasoning behind each judgment.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--rule);">
+    <div style="background: var(--paper); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;">Page 1</div>
+      <div style="font-weight: 500; font-size: 14px;">Home</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px;">riotgames.com/en</div>
+    </div>
+    <div style="background: var(--paper); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;">Page 2</div>
+      <div style="font-weight: 500; font-size: 14px;">Who We Are</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px;">/who-we-are</div>
+    </div>
+    <div style="background: var(--paper); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;">Page 3</div>
+      <div style="font-weight: 500; font-size: 14px;">Work With Us</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px;">/work-with-us</div>
+    </div>
+    <div style="background: var(--paper); padding: 24px;">
+      <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px;">Page 4</div>
+      <div style="font-weight: 500; font-size: 14px;">News</div>
+      <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px;">/news</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- KEY FINDINGS -->
+<div class="full-width">
+<section id="findings">
+  <div class="section-header">
+    <span class="section-num">02 — Findings</span>
+    <h2>Critical Failures</h2>
+  </div>
+
+  <p style="max-width: 640px; margin-bottom: 48px;">Seven success criteria failed across the audit sample. These represent real barriers for users relying on assistive technologies or with specific sensory or motor needs.</p>
+
+  <div class="findings-grid">
+
+    <div class="finding">
+      <div class="finding-criterion">
+        <div class="criterion-code">1.1.1</div>
+        <div class="criterion-name">Non-text Content</div>
+      </div>
+      <div class="finding-detail">
+        <p>Multiple images across the Home, Who We Are, and News pages are missing descriptive alt text. Screen reader users receive no information about what these images depict. Additionally, some text boxes use white text but the underlying HTML declares a white background, confusing automated contrast checkers.</p>
+        <div class="finding-pages">
+          <span class="page-tag failed">Home — Failed</span>
+          <span class="page-tag failed">Who We Are — Failed</span>
+          <span class="page-tag failed">News — Failed</span>
+          <span class="page-tag">Work With Us — Passed</span>
+        </div>
+      </div>
+      <div class="finding-result">
+        <div class="result-badge fail">Failed</div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-criterion">
+        <div class="criterion-code">1.2.1 – 1.2.5</div>
+        <div class="criterion-name">Time-based Media</div>
+      </div>
+      <div class="finding-detail">
+        <p>Background videos on the Who We Are and Work With Us pages play without audio descriptions, captions, or any media alternative. Users who are blind or deaf-blind receive no information about what the video communicates. No synchronized audio description exists for any video element on the site.</p>
+        <div class="finding-pages">
+          <span class="page-tag failed">Who We Are — Failed</span>
+          <span class="page-tag failed">Work With Us — Failed</span>
+          <span class="page-tag">Home — Not Present</span>
+          <span class="page-tag">News — Not Present</span>
+        </div>
+      </div>
+      <div class="finding-result">
+        <div class="result-badge fail">Failed</div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-criterion">
+        <div class="criterion-code">1.4.3</div>
+        <div class="criterion-name">Contrast (Minimum)</div>
+      </div>
+      <div class="finding-detail">
+        <p>Insufficient text-to-background contrast was found on the Home and Work With Us pages. WAVE flagged multiple instances where text did not meet the required 4.5:1 contrast ratio for normal text. Some failures were caused by transparent backgrounds rendered visually over imagery but coded as white in HTML.</p>
+        <div class="finding-pages">
+          <span class="page-tag failed">Home — Failed</span>
+          <span class="page-tag failed">Work With Us — Failed</span>
+          <span class="page-tag failed">Who We Are — Failed</span>
+        </div>
+      </div>
+      <div class="finding-result">
+        <div class="result-badge fail">Failed</div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-criterion">
+        <div class="criterion-code">2.2.2</div>
+        <div class="criterion-name">Pause, Stop, Hide</div>
+      </div>
+      <div class="finding-detail">
+        <p>Background videos on Home, Who We Are, and Work With Us auto-play on page load with no controls provided to pause, stop, or hide the content. Users with vestibular disorders, attention difficulties, or cognitive disabilities cannot stop motion that is distracting or disorienting.</p>
+        <div class="finding-pages">
+          <span class="page-tag failed">Home — Failed</span>
+          <span class="page-tag failed">Who We Are — Failed</span>
+          <span class="page-tag failed">Work With Us — Failed</span>
+          <span class="page-tag">News — Passed</span>
+        </div>
+      </div>
+      <div class="finding-result">
+        <div class="result-badge fail">Failed</div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-criterion">
+        <div class="criterion-code">4.1.2</div>
+        <div class="criterion-name">Name, Role, Value</div>
+      </div>
+      <div class="finding-detail">
+        <p>While some ARIA labels exist on the site, not all interactive components have fully descriptive name, role, or value attributes. Custom UI elements without proper semantic markup are invisible or confusing to screen readers, preventing assistive technology users from understanding or operating them.</p>
+        <div class="finding-pages">
+          <span class="page-tag failed">Home — Cannot Tell</span>
+          <span class="page-tag failed">Who We Are — Cannot Tell</span>
+          <span class="page-tag failed">Work With Us — Cannot Tell</span>
+        </div>
+      </div>
+      <div class="finding-result">
+        <div class="result-badge warn">Cannot Tell</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 64px;">
+    <h3>What Passed Well</h3>
+    <p style="max-width: 640px; margin-bottom: 32px;">Several areas demonstrated strong accessibility practices, indicating that Riot Games has invested in some aspects of inclusive design.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; background: var(--rule);">
+      <div style="background: var(--pass-bg); padding: 24px; border-left: 3px solid var(--pass);">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--pass); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Keyboard Navigation</div>
+        <p style="font-size: 13px;">All pages can be navigated sequentially by keyboard, with no keyboard traps. Focus order is logical and follows the visual layout.</p>
+      </div>
+      <div style="background: var(--pass-bg); padding: 24px; border-left: 3px solid var(--pass);">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--pass); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Responsive Design</div>
+        <p style="font-size: 13px;">Content reflows correctly across screen sizes and orientations. Zoom up to 200% preserves all content and functionality without horizontal scrolling.</p>
+      </div>
+      <div style="background: var(--pass-bg); padding: 24px; border-left: 3px solid var(--pass);">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: var(--pass); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">Consistent Navigation</div>
+        <p style="font-size: 13px;">The navigation bar and footer are consistent across all pages, with clear headings and labels that accurately describe page content.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- HEURISTIC EVALUATION -->
+<div class="full-width">
+<section id="heuristics">
+  <div class="section-header">
+    <span class="section-num">03 — Heuristic Analysis</span>
+    <h2>Nielsen's 10 Heuristics Applied</h2>
+  </div>
+
+  <p style="max-width: 640px; margin-bottom: 16px;">Beyond strict WCAG compliance, the site was evaluated through the lens of Nielsen's 10 usability heuristics to capture broader interaction quality issues.</p>
+
+  <div class="heuristic-list">
+
+    <div class="heuristic">
+      <div class="heuristic-num">01</div>
+      <h4>Visibility of System Status</h4>
+      <p>The site provides clear feedback for user actions — search returns result counts, job applications confirm submissions, and the active navigation item is highlighted. Status messages are communicated via ARIA live regions in some areas.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — mostly compliant
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">02</div>
+      <h4>Match Between System and Real World</h4>
+      <p>Language and iconography align well with user expectations. Buttons use natural language ("Apply Now", "Learn More"), and the globe icon for language selection is universally understood. Navigation labels are clear and jargon-free.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — good alignment
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">03</div>
+      <h4>User Control and Freedom</h4>
+      <p>Auto-playing background videos cannot be paused, stopped, or hidden. This is a significant violation — users who find motion distracting, are prone to vestibular disorders, or need to focus on text content have no recourse. No "reduce motion" preference is respected.</p>
+      <div class="severity high">
+        <div class="severity-dot"></div>
+        High severity — no video controls
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">04</div>
+      <h4>Consistency and Standards</h4>
+      <p>Visual design is highly consistent across pages — typography, button styles, spacing, and color use follow a clear system. The footer is identical across all pages, and section headings follow predictable patterns throughout the site.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — strong consistency
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">05</div>
+      <h4>Error Prevention</h4>
+      <p>The job application form on Work With Us prevents users from selecting unavailable filter options, reducing errors at the interaction level. Search provides clear "no results" states. However, the site lacks form validation patterns on most input fields.</p>
+      <div class="severity medium">
+        <div class="severity-dot"></div>
+        Medium severity — partial coverage
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">06</div>
+      <h4>Recognition Over Recall</h4>
+      <p>Navigation options are always visible in the persistent header. Job listings show full context in the list view, reducing the need to click into individual postings. However, the language-selector globe icon relies solely on icon recognition without a text label.</p>
+      <div class="severity medium">
+        <div class="severity-dot"></div>
+        Medium severity — globe icon unlabeled
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">07</div>
+      <h4>Flexibility and Efficiency</h4>
+      <p>Multiple paths to the same content exist via the nav, search, and footer links. Power users can use keyboard shortcuts throughout. The site does not appear to offer personalization or content filtering beyond the job listings page.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — adequate flexibility
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">08</div>
+      <h4>Aesthetic and Minimalist Design</h4>
+      <p>The site's visual design is polished and on-brand. However, some pages use heavy visual backgrounds behind text, creating decorative noise that competes with content readability. The contrast failures identified in WCAG 1.4.3 partly stem from this aesthetic approach.</p>
+      <div class="severity medium">
+        <div class="severity-dot"></div>
+        Medium severity — contrast trade-offs
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">09</div>
+      <h4>Help Users Recognize, Diagnose, and Recover from Errors</h4>
+      <p>Search errors display clear "no results" messaging. Login failures inform users of incorrect credentials. Error messages are written in plain language, not error codes. The site does not expose technical errors to end users.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — good error handling
+      </div>
+    </div>
+
+    <div class="heuristic">
+      <div class="heuristic-num">10</div>
+      <h4>Help and Documentation</h4>
+      <p>The consistent footer provides links to support pages, community forums, and documentation across all pages. A persistent help link is accessible from any point in the user journey, and a search bar is always available in the main navigation.</p>
+      <div class="severity low">
+        <div class="severity-dot"></div>
+        Low severity — well-documented
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- RECOMMENDATIONS -->
+<div class="full-width">
+<section id="recommendations">
+  <div class="section-header">
+    <span class="section-num">04 — Recommendations</span>
+    <h2>Prioritized Action Plan</h2>
+  </div>
+
+  <p style="max-width: 640px; margin-bottom: 16px;">Recommendations are ordered by impact — addressing critical failures first, followed by improvements that would meaningfully improve the experience for users with disabilities.</p>
+
+  <div class="rec-list">
+
+    <div class="rec">
+      <div class="rec-num">01</div>
+      <div class="rec-body">
+        <h4>Add descriptive alt text to all images site-wide</h4>
+        <p>Every non-decorative image needs a meaningful alt attribute. For hero and background images that convey context, write descriptive alt text explaining what the image communicates. Purely decorative images should use <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">alt=""</code> to be ignored by screen readers. Audit all images using WAVE and a manual pass to ensure no meaningful content is communicated only through imagery.</p>
+        <span class="rec-priority critical">Critical — WCAG 1.1.1</span>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-num">02</div>
+      <div class="rec-body">
+        <h4>Add pause/stop controls to all auto-playing videos</h4>
+        <p>Every background video must have a mechanism to pause, stop, or hide it — a floating button in the corner of each video section is the most common pattern. Consider also implementing <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">prefers-reduced-motion</code> media query support so users with that OS preference automatically see static images instead of motion content.</p>
+        <span class="rec-priority critical">Critical — WCAG 2.2.2</span>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-num">03</div>
+      <div class="rec-body">
+        <h4>Fix text contrast ratios across all pages</h4>
+        <p>Identify all instances where text falls below 4.5:1 contrast (normal text) or 3:1 (large text/UI components). For text overlaid on images or video, add a semi-transparent dark overlay behind the text, or use a solid color panel. Fix the HTML/CSS mismatch where backgrounds are declared as white but render as transparent — this creates both real contrast issues and false positives in automated tools.</p>
+        <span class="rec-priority critical">Critical — WCAG 1.4.3</span>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-num">04</div>
+      <div class="rec-body">
+        <h4>Provide media alternatives for background video content</h4>
+        <p>For decorative videos (pure atmosphere), confirm this with <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">aria-hidden="true"</code> so screen readers skip them. For videos that communicate meaning, add either captions (for speech/sound content) or a text alternative describing what the video shows. Even a brief visible caption block under the video section would satisfy this criterion.</p>
+        <span class="rec-priority high">High — WCAG 1.2.1–1.2.5</span>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-num">05</div>
+      <div class="rec-body">
+        <h4>Complete ARIA labeling for all interactive components</h4>
+        <p>Audit all custom components — carousels, dropdowns, modals, tabs — against the ARIA authoring practices guide. Every interactive element needs a programmatic name (via <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">aria-label</code> or associated <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">&lt;label&gt;</code>), a role, and appropriate state communication. The unlabeled globe/language icon button should receive an <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">aria-label="Select language"</code> at minimum.</p>
+        <span class="rec-priority high">High — WCAG 4.1.2</span>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-num">06</div>
+      <div class="rec-body">
+        <h4>Strengthen keyboard focus visibility</h4>
+        <p>While keyboard navigation works and focus is technically visible, the current focus indicators could be stronger. Implement a high-contrast focus ring (2px solid outline with 3:1 contrast against adjacent colors) on all interactive elements. Avoid <code style="font-family: 'DM Mono', monospace; font-size: 12px; background: #eee; padding: 1px 5px;">outline: none</code> without a custom replacement. Users navigating by keyboard benefit significantly from a clear, consistent focus indicator.</p>
+        <span class="rec-priority medium">Medium — WCAG 2.4.7 / 2.4.11</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- CONCLUSION -->
+<div class="full-width">
+<section id="conclusion">
+  <div class="section-header">
+    <span class="section-num">05 — Conclusion</span>
+    <h2>Summary & Reflection</h2>
+  </div>
+
+  <div class="conclusion-grid">
+    <div>
+      <p>Riot Games' website demonstrates a solid foundation in many areas of accessibility — the site is responsive, keyboard navigable, consistently structured, and free of keyboard traps. These are non-trivial achievements for a site of this scale and visual complexity.</p>
+      <p>However, the seven identified failures are meaningful barriers. The absence of video controls (2.2.2), missing alt text (1.1.1), and contrast failures (1.4.3) represent real obstacles for users with visual impairments, vestibular disorders, and cognitive disabilities. Notably, the video-related failures (1.2.1–1.2.5, 2.2.2) are closely related — addressing autoplay and adding appropriate media alternatives would resolve a cluster of failures simultaneously.</p>
+      <p>Given Riot Games' global scale — tens of millions of active users — even incremental improvements to accessibility would meaningfully improve the experience for a large number of people. The issues identified are fixable, and the site's strong design system suggests the team has the capability to implement these changes systematically.</p>
+    </div>
+    <div>
+      <div style="display: grid; gap: 24px;">
+        <div class="conclusion-stat">
+          <div class="big accent">7</div>
+          <p>Critical failures identified across the four sampled pages, all addressable through targeted development effort</p>
+        </div>
+        <div class="conclusion-stat">
+          <div class="big accent2">65%</div>
+          <p>Of evaluated criteria passed — a reasonable baseline, but insufficient for WCAG 2.2 AA conformance</p>
+        </div>
+        <div class="conclusion-stat">
+          <div class="big">36</div>
+          <p>Criteria passed, indicating the site already meets accessibility standards in many fundamental areas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 64px; padding: 40px; background: var(--ink); color: var(--paper);">
+    <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 16px;">Evaluator's Note</div>
+    <p style="color: rgba(245, 242, 236, 0.8); font-family: 'DM Serif Display', serif; font-style: italic; font-size: 20px; line-height: 1.6; max-width: 720px;">This audit strengthened my understanding that accessibility is not a checklist — it is a design philosophy. The most impactful failures here were not obscure edge cases but foundational decisions: auto-playing video without controls, images without descriptions. These choices affect real users every day.</p>
+  </div>
+</section>
+</div>
+
+<footer>
+  <p>Riot Games Accessibility Audit · Chloe Kim · April 2025 · WCAG 2.2 AA</p>
+  <a class="back-link" href="https://chanseox.github.io/">Back to portfolio →</a>
+</footer>
+
+</body>
+</html>

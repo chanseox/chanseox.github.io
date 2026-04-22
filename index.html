@@ -319,7 +319,7 @@
 
     .project-cards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.75rem;
     }
     .project-card {
@@ -347,7 +347,7 @@
     .project-card:hover { transform: translateY(-6px); box-shadow: 0 24px 56px rgba(201,82,106,0.12); }
     .project-card:hover::after { opacity: 0.03; }
     .project-card-img {
-      width: 100%; height: 220px;
+      width: 100%; height: 200px;
       display: flex; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
     }
@@ -558,6 +558,25 @@
           </div>
           <div class="project-name">H-E-B Pill Reminder</div>
           <div class="project-desc">A digital Pill Reminder designed to be implemented into the My H-E-B app.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <a href="riot-accessibility.html" class="project-card" style="transition-delay:0.15s">
+        <div class="project-card-img" style="background:#0f0e0c; padding:0; display:flex; align-items:center; justify-content:center;">
+          <div style="text-align:center; padding: 2rem;">
+            <div style="font-family:'Epilogue',sans-serif; font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(245,242,236,0.4); margin-bottom:1rem;">WCAG 2.2 AA</div>
+            <div style="font-family:'Fraunces',serif; font-size:3.5rem; font-weight:300; line-height:1; color:#f5f2ec;">65<span style="font-size:1.5rem; opacity:0.4; vertical-align:super;">%</span></div>
+            <div style="font-family:'Epilogue',sans-serif; font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(245,242,236,0.4); margin-top:0.6rem;">criteria passed</div>
+          </div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">UX Research</span>
+            <span class="tag">Accessibility</span>
+          </div>
+          <div class="project-name">Riot Games Audit</div>
+          <div class="project-desc">A WCAG 2.2 AA accessibility audit of Riot Games' website uncovering 7 critical barriers affecting millions of users.</div>
           <div class="project-view-work">View work <span>›</span></div>
         </div>
       </a>
