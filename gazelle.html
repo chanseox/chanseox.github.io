@@ -58,7 +58,7 @@
     .scroll-progress {
       position: fixed; top: 0; left: 0;
       width: 0%; height: 2px;
-      background: var(--grad);
+      background: linear-gradient(135deg, #1a5c35, #2d8a52);
       z-index: 9999;
       transition: width 0.05s linear;
       pointer-events: none;
@@ -93,7 +93,7 @@
     }
     .nav-links a::after {
       content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 1px; background: var(--grad);
+      height: 1px; background: linear-gradient(135deg, #1a5c35, #2d8a52);
       transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
     }
     .nav-links a:hover { color: var(--text); }
@@ -122,13 +122,22 @@
     .blob-1 { width: 500px; height: 500px; background: radial-gradient(circle, #a8d5b5, transparent); top: -100px; right: -80px; }
     .blob-2 { width: 300px; height: 300px; background: radial-gradient(circle, #c5e8c8, transparent); bottom: 50px; left: -60px; }
 
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s; line-height: 1;
+      margin-bottom: 1.4rem;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link svg { transition: transform 0.2s; flex-shrink: 0; display: block; margin-top: 1px; }
+    .back-link:hover svg { transform: translateX(-3px); }
+
     .hero-eyebrow {
       font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
       background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       font-weight: 500; margin-bottom: 1.2rem;
-      display: flex; align-items: center; gap: 10px;
     }
-    .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
 
     h1 {
       font-family: 'Fraunces', serif;
@@ -221,12 +230,11 @@
     /* SCREEN SHOWCASE */
     .screen-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
     .screen-card {
-      background: #fff;
       border: 1px solid var(--border);
       overflow: hidden;
       position: relative;
     }
-    .screen-card img { width: 100%; display: block; }
+    .screen-card img { width: 100%; display: block; object-fit: cover; }
     .screen-caption {
       padding: 1rem 1.2rem;
       border-top: 1px solid var(--border);
@@ -477,7 +485,9 @@
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <nav id="navbar">
-  <a href="index.html" class="nav-logo"><span>Chloe</span> Kim</a>
+  <a href="index.html" class="nav-logo" style="display:flex;align-items:center;">
+    <svg style="height:32px;width:auto;display:block;" width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.7966 118.516C30.1452 118.516 21.4422 116.02 14.6877 111.029C8.19293 105.775 4.94556 97.2367 4.94556 85.4147C4.94556 73.8555 8.19293 65.3174 14.6877 59.8005C21.4422 54.2836 30.1452 51.5252 40.7966 51.5252H82.8825C83.4021 40.7541 87.299 32.8728 94.5731 27.8813C102.107 22.6271 112.369 20 125.358 20C138.348 20 148.35 22.6271 155.364 27.8813C162.638 32.8728 166.535 40.7541 167.054 51.5252H211.089C221.74 51.5252 230.313 54.2836 236.808 59.8005C243.563 65.3174 246.94 73.8555 246.94 85.4147C246.94 96.974 243.563 105.381 236.808 110.635C230.313 115.889 221.74 118.516 211.089 118.516H172.12L158.871 140.19L163.547 149.253C172.38 147.152 181.862 146.232 191.994 146.495C202.126 146.495 211.738 148.071 220.831 151.224C230.183 154.113 237.977 158.973 244.212 165.804C250.187 171.846 253.824 178.939 255.123 187.083C256.682 195.227 256.162 202.977 253.564 210.333C250.967 217.426 246.29 222.943 239.536 226.884C229.144 233.189 218.233 234.634 206.802 231.219C195.631 227.541 186.539 220.579 179.524 210.333C175.368 203.503 171.471 197.066 167.834 191.024C164.457 184.719 160.56 179.596 156.143 175.656C151.727 171.715 145.882 169.745 138.607 169.745C132.113 169.745 126.527 171.189 121.851 174.079C117.435 176.706 112.888 180.516 108.212 185.507C103.536 190.499 97.8204 196.41 91.0659 203.24C84.5712 210.071 75.9981 217.558 65.3467 225.702C55.4747 233.058 45.9924 236.473 36.8997 235.947C28.0669 235.159 20.533 232.007 14.298 226.49C8.06304 220.973 4.03629 214.537 2.21776 207.181C-0.380133 196.41 1.17861 187.083 6.89398 179.202C12.6094 171.058 21.9618 161.732 34.9513 151.224L74.3094 118.516H40.7966Z" fill="#FF00AA"/></svg>
+  </a>
   <ul class="nav-links">
     <li><a href="index.html#work">Work</a></li>
     <li><a href="about.html">About</a></li>
@@ -490,7 +500,11 @@
   <div class="hero-blob blob-1"></div>
   <div class="hero-blob blob-2"></div>
   <div>
-    <div class="hero-eyebrow">Case study - Contract</div>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:block;"><path d="M8.5 2L3.5 7L8.5 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span style="line-height:1; position:relative; top:3px;">Back to work</span>
+    </a>
+    <div class="hero-eyebrow">Case Study — Contract</div>
     <h1>Designing for a <em>greener</em> planet, one dashboard at a time.</h1>
     <p class="hero-desc">
       At Gazelle Ecosolutions, I redesigned the desktop dashboard and onboarding experience for an environmental data platform used by carbon credit verifiers — translating complex satellite science into an interface that actually makes sense — to support real conservation work protecting the Kalahari and Okavango ecosystems.
