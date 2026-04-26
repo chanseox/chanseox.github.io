@@ -1,1 +1,1 @@
-Welcome to Chloe's portfolio site! chanseox.github.io
+Welcome to Chloe's portfolio site! <a href="https://chanseox.github.io/">Chloe's website</a>
