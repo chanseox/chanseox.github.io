@@ -249,18 +249,32 @@
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--grad);
-      color: #fff;
-      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--text);
+      padding: 0;
       font-family: 'Epilogue', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
       text-decoration: none;
       border: none;
-      transition: opacity 0.2s, transform 0.2s;
+      position: relative;
+      transition: color 0.2s ease;
     }
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); filter: brightness(1.08); }
+    .btn-primary::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 100%; height: 1.5px;
+      background: #FF00AA;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-primary:hover { color: #FF00AA; }
+    .btn-primary:hover::after { transform: scaleX(1); }
+    .btn-primary:hover .arrow { transform: translateY(3px); }
+    .btn-primary .arrow { display: inline-block; transition: transform 0.25s ease; }
+
 
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 0.5rem;
@@ -536,7 +550,7 @@
         Human-centered product designer passionate about bridging the gap between digital interactions and the natural world. Also a recent grad from UT Austin🤘
       </p>
       <div class="hero-ctas anim-fade-up" style="transition-delay:0.28s">
-        <a href="#work" class="btn-primary">View my work ↓</a>
+        <a href="#work" class="btn-primary"><span>View my work</span> <span class="arrow">↓</span></a>
       </div>
     </div>
   </section>
