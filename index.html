@@ -12,8 +12,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f7f4ef;
-      --bg2: #eee9e1;
+      --bg: #fafaf9;
+      --bg2: #f3f0eb;
       --text: #1c1a17;
       --muted: #8a8378;
       --border: #ddd8cf;
@@ -49,7 +49,7 @@
     }
 
     body {
-      background: radial-gradient(ellipse at 20% 0%, #ede5d8 0%, #f7f4ef 55%, #eef0ec 100%);
+      background: var(--bg);
       color: var(--text);
       font-family: 'Epilogue', sans-serif;
       font-weight: 300;
@@ -139,18 +139,18 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(80px);
-      opacity: 0.45;
+      opacity: 0.65;
       pointer-events: none;
     }
     .blob-1 {
       width: 500px; height: 500px;
-      background: radial-gradient(circle, #e8b4bc, transparent);
+      background: radial-gradient(circle, #f0a0b8, transparent);
       top: -100px; right: -80px;
       animation: drift 12s ease-in-out infinite alternate;
     }
     .blob-2 {
       width: 380px; height: 380px;
-      background: radial-gradient(circle, #e8c4bc, transparent);
+      background: radial-gradient(circle, #f5b8c4, transparent);
       bottom: 0px; left: 100px;
       animation: drift 15s ease-in-out infinite alternate-reverse;
     }
