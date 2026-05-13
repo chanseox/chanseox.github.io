@@ -238,6 +238,149 @@
       .playground-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
+
+    /* ═══════════════════════════════════════
+       FUN MODE  —  all rules scoped to body.fun
+       ═══════════════════════════════════════ */
+
+    /* Pencil cursor */
+    body.fun, body.fun * {
+      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtNDUgMTYgMTYpIj48cmVjdCB4PSIxMyIgeT0iNCIgd2lkdGg9IjYiIGhlaWdodD0iMTgiIHJ4PSIxIiBmaWxsPSIjZmZiM2Q5Ii8+PHJlY3QgeD0iMTMiIHk9IjQiIHdpZHRoPSI2IiBoZWlnaHQ9IjE4IiByeD0iMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkYwMEFBIiBzdHJva2Utd2lkdGg9IjEiLz48cmVjdCB4PSIxMyIgeT0iMyIgd2lkdGg9IjYiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9IiNmZmUwZjQiIHN0cm9rZT0iI0ZGMDBBQSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBvbHlnb24gcG9pbnRzPSIxMywyMiAxOSwyMiAxNiwyOCIgZmlsbD0iI2ZmZDZhMCIvPjxwb2x5Z29uIHBvaW50cz0iMTMsMjIgMTksMjIgMTYsMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGMDBBQSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBvbHlnb24gcG9pbnRzPSIxNSwyNyAxNywyNyAxNiwzMCIgZmlsbD0iIzFjMWExNyIvPjxyZWN0IHg9IjE0LjUiIHk9IjYiIHdpZHRoPSIxLjUiIGhlaWdodD0iMTIiIHJ4PSIwLjUiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjUiLz48L2c+PC9zdmc+') 2 30, auto !important;
+    }
+
+    /* Shimmer progress bar */
+    body.fun .scroll-progress {
+      background: linear-gradient(90deg, #FF00AA, #ff99dd, #a78bfa, #FF00AA);
+      background-size: 300%;
+      animation: shimmer 3s linear infinite;
+      height: 3px;
+    }
+    @keyframes shimmer { 0% { background-position: 0%; } 100% { background-position: 300%; } }
+
+    /* Body */
+    body.fun { background: #fdf8f2; }
+
+    /* Nav */
+    body.fun nav.scrolled { background: rgba(253,240,248,0.92); border-color: #f0c8dc; }
+
+    /* Mesh gradient */
+    .mesh-bg {
+      display: none; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, #fde8f488 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 10%, #d8eeff88 0%, transparent 55%),
+        radial-gradient(ellipse 70% 60% at 50% 80%, #d4f5ed88 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 60%, #e8e0f888 0%, transparent 50%);
+    }
+    body.fun .mesh-bg { display: block; }
+
+    /* Halftone dots */
+    .dots-bg {
+      display: none; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, #FF00AA22 1px, transparent 1px);
+      background-size: 26px 26px;
+    }
+    body.fun .dots-bg { display: block; }
+
+    /* Sparkles */
+    .sparkle-layer { display: none; position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    body.fun .sparkle-layer { display: block; }
+    .sparkle { position: absolute; animation: sparklePop ease-in-out infinite; user-select: none; pointer-events: none; }
+    @keyframes sparklePop {
+      0%, 100% { opacity: 0.15; transform: scale(0.7) rotate(0deg); }
+      50%       { opacity: 0.85; transform: scale(1.15) rotate(20deg); }
+    }
+
+    /* Hero stickers */
+    .hero-stickers { display: none; gap: 0.7rem; margin-top: 1.4rem; flex-wrap: wrap; }
+    body.fun .hero-stickers { display: flex; }
+    .sticker {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-family: 'Epilogue', sans-serif;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; border: 2px solid;
+    }
+    .sticker-pink { background: #FF00AA; color: white; border-color: #cc0088; transform: rotate(-2deg); }
+    .sticker-mint { background: #d4f5ed; color: #1a7060; border-color: #a0e0d0; transform: rotate(1.5deg); }
+    .sticker-lav  { background: #e8e0f8; color: #5040a0; border-color: #c0b0f0; transform: rotate(-1deg); }
+
+    /* Doodle divider */
+    .doodle-divider { display: none; max-width: 1100px; margin: 0 auto; padding: 0 3.5rem 1rem; }
+    body.fun .doodle-divider { display: block; }
+
+    /* Cards */
+    body.fun .play-card {
+      border: 2px solid #1a1520; border-radius: 18px;
+      box-shadow: 4px 4px 0 #1a1520; background: #fffbfd;
+    }
+    body.fun .play-card:nth-child(2n) { transform: rotate(0.5deg); }
+    body.fun .play-card:nth-child(3n) { transform: rotate(-0.5deg); }
+    body.fun .play-card:hover {
+      transform: translateY(-7px) rotate(0deg) !important;
+      box-shadow: 6px 10px 0 #FF00AA, 0 20px 48px rgba(255,0,170,0.12);
+      border-color: #FF00AA;
+    }
+
+    /* Card titlebar (hidden in normal, shown in fun) */
+    .card-titlebar {
+      display: none; background: #1a1520; padding: 0.45rem 0.9rem;
+      align-items: center; justify-content: space-between; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    body.fun .card-titlebar { display: flex; }
+    body.fun .play-card:hover .card-titlebar { background: #FF00AA; }
+    .card-titlebar-title { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: white; font-weight: 500; }
+    .card-titlebar-dots { display: flex; gap: 0.3rem; }
+    .card-titlebar-dots span { width: 8px; height: 8px; border-radius: 50%; }
+    .card-titlebar-dots span:nth-child(1) { background: #ff6b6b; }
+    .card-titlebar-dots span:nth-child(2) { background: #ffd93d; }
+    .card-titlebar-dots span:nth-child(3) { background: #6bcb77; }
+
+    body.fun .play-card-img { border-bottom: 2px solid #1a1520; }
+    body.fun .play-card:hover .play-card-img { border-color: #FF00AA; }
+
+    /* Card image gradient tints */
+    body.fun .play-card:nth-child(1) .play-card-img { background: linear-gradient(135deg,#fde8f4,#d8eeff); }
+    body.fun .play-card:nth-child(2) .play-card-img { background: linear-gradient(135deg,#d4f5ed,#e8e0f8); }
+    body.fun .play-card:nth-child(3) .play-card-img { background: linear-gradient(135deg,#fff0cc,#fde8d8); }
+    body.fun .play-card:nth-child(4) .play-card-img { background: linear-gradient(135deg,#e0f0ff,#d4f5ed); }
+    body.fun .play-card:nth-child(5) .play-card-img { background: linear-gradient(135deg,#f8e0ff,#fde8f4); }
+
+    /* Colorful tags */
+    body.fun .play-tag { border-radius: 4px; border-width: 1.5px; font-size: 0.6rem; }
+    body.fun .play-tag:nth-child(1) { color: #c00088; background: #ffe0f4; border-color: #ffb3e0; }
+    body.fun .play-tag:nth-child(2) { color: #0070a0; background: #d8eeff; border-color: #a0d0f0; }
+    body.fun .play-tag:nth-child(3) { color: #207050; background: #d4f5ed; border-color: #a0e0cc; }
+
+    /* Lightbox fun style */
+    body.fun .lightbox-overlay { background: rgba(20,5,30,0.9); }
+    body.fun .lightbox-inner {
+      background: white; border: 2px solid #FF00AA; border-radius: 18px;
+      overflow: hidden; box-shadow: 8px 8px 0 #FF00AA;
+      flex-direction: column; gap: 0; align-items: stretch;
+    }
+    body.fun .lightbox-inner img {
+      max-width: 80vw; max-height: 65vh; padding: 1rem;
+      border-radius: 0; box-shadow: none; align-self: center;
+    }
+    body.fun .lightbox-caption { padding: 0 1rem 1rem; color: var(--muted); }
+    .lightbox-titlebar {
+      display: none; width: 100%; background: #FF00AA;
+      padding: 0.5rem 1rem; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    body.fun .lightbox-titlebar { display: flex; }
+    body.fun .lightbox-close { position: static; color: white; font-size: 1rem; opacity: 1; }
+    .lightbox-titlebar-label { color: white; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; font-family: 'Epilogue', sans-serif; }
+
+    /* Chicken footer border */
+    .chicken-border {
+      display: none; width: 100%; height: 40px; position: relative; z-index: 2;
+      background: url('data:image/gif;base64,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') repeat-x left center / auto 100%;
+    }
+    body.fun .chicken-border { display: block; }
+    body.fun footer { border-top: none; background: rgba(253,240,248,0.9); }
+
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4TR0QEYVQF"></script>
@@ -250,10 +393,24 @@
 </head>
 <body>
 
+  <div class="mesh-bg"></div>
+  <div class="dots-bg"></div>
+  <div class="sparkle-layer" id="sparkleLayer"></div>
   <div class="scroll-progress" id="scrollProgress"></div>
 
   <nav id="navbar">
     <a href="index.html" class="nav-logo" style="display:flex;align-items:center;"><svg style="height:32px;width:auto;display:block;" width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M40.7966 118.516C30.1452 118.516 21.4422 116.02 14.6877 111.029C8.19293 105.775 4.94556 97.2367 4.94556 85.4147C4.94556 73.8555 8.19293 65.3174 14.6877 59.8005C21.4422 54.2836 30.1452 51.5252 40.7966 51.5252H82.8825C83.4021 40.7541 87.299 32.8728 94.5731 27.8813C102.107 22.6271 112.369 20 125.358 20C138.348 20 148.35 22.6271 155.364 27.8813C162.638 32.8728 166.535 40.7541 167.054 51.5252H211.089C221.74 51.5252 230.313 54.2836 236.808 59.8005C243.563 65.3174 246.94 73.8555 246.94 85.4147C246.94 96.974 243.563 105.381 236.808 110.635C230.313 115.889 221.74 118.516 211.089 118.516H172.12L158.871 140.19L163.547 149.253C172.38 147.152 181.862 146.232 191.994 146.495C202.126 146.495 211.738 148.071 220.831 151.224C230.183 154.113 237.977 158.973 244.212 165.804C250.187 171.846 253.824 178.939 255.123 187.083C256.682 195.227 256.162 202.977 253.564 210.333C250.967 217.426 246.29 222.943 239.536 226.884C229.144 233.189 218.233 234.634 206.802 231.219C195.631 227.541 186.539 220.579 179.524 210.333C175.368 203.503 171.471 197.066 167.834 191.024C164.457 184.719 160.56 179.596 156.143 175.656C151.727 171.715 145.882 169.745 138.607 169.745C132.113 169.745 126.527 171.189 121.851 174.079C117.435 176.706 112.888 180.516 108.212 185.507C103.536 190.499 97.8204 196.41 91.0659 203.24C84.5712 210.071 75.9981 217.558 65.3467 225.702C55.4747 233.058 45.9924 236.473 36.8997 235.947C28.0669 235.159 20.533 232.007 14.298 226.49C8.06304 220.973 4.03629 214.537 2.21776 207.181C-0.380133 196.41 1.17861 187.083 6.89398 179.202C12.6094 171.058 21.9618 161.732 34.9513 151.224L74.3094 118.516H40.7966Z" fill="#FF00AA"/></svg></a>
+    <div class="t-row" style="position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;">
+      <span id="lbl-normal" style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:#aaa;min-width:44px;text-align:right;transition:color .35s;">normal</span>
+      <div id="kawaii-trk" onclick="toggleFun()" role="switch" aria-checked="false" tabindex="0" aria-label="Toggle fun mode" style="width:62px;height:32px;border-radius:16px;background:#e0e0e0;border:2.5px solid #b8b8b8;position:relative;cursor:pointer;transition:background .4s,border-color .4s;flex-shrink:0;overflow:hidden;">
+        <div id="t-decos" style="position:absolute;left:6px;top:50%;transform:translateY(-50%);opacity:0;transition:opacity .3s .2s;font-size:8px;color:rgba(255,255,255,.95);line-height:1.6;pointer-events:none;user-select:none;">★<br>♡<br>✦</div>
+        <div id="kawaii-thumb" style="width:24px;height:24px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:transform .45s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;">
+          <svg id="face-grey" width="14" height="14" viewBox="0 0 17 17"><line x1="4" y1="7" x2="7.5" y2="7" stroke="#c8c8c8" stroke-width="1.5" stroke-linecap="round"/><line x1="9.5" y1="7" x2="13" y2="7" stroke="#c8c8c8" stroke-width="1.5" stroke-linecap="round"/><line x1="5.5" y1="11.5" x2="11.5" y2="11.5" stroke="#c8c8c8" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg id="face-pink" width="14" height="14" viewBox="0 0 17 17" style="position:absolute;opacity:0;transition:opacity .25s;"><circle cx="5.5" cy="7" r="1.5" fill="#FF00AA"/><circle cx="11.5" cy="7" r="1.5" fill="#FF00AA"/><ellipse cx="3.2" cy="11" rx="2" ry="1.2" fill="#ff80d5" opacity=".75"/><ellipse cx="13.8" cy="11" rx="2" ry="1.2" fill="#ff80d5" opacity=".75"/><path d="M5.5 11.5 Q8.5 14.5 11.5 11.5" fill="none" stroke="#FF00AA" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+      <span id="lbl-fun" style="font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:#aaa;transition:color .35s;white-space:nowrap;">fun ✦</span>
+    </div>
     <ul class="nav-links">
       <li><a href="index.html">Work</a></li>
       <li><a href="about.html">About</a></li>
@@ -265,6 +422,26 @@
     <div class="page-label">Playground</div>
     <h1>My digital <em>sandbox.</em></h1>
     <p class="page-sub">My passion projects where I dabble in game dev, 3D modeling, animation, illustration, branding, typography, video editing, graphic design, and more.</p>
+    <div class="hero-stickers">
+      <span class="sticker sticker-pink">✦ &nbsp;for fun</span>
+      <span class="sticker sticker-mint">🌱 &nbsp;ongoing</span>
+      <span class="sticker sticker-lav">✿ &nbsp;passion</span>
+    </div>
+  </div>
+
+  <div class="doodle-divider">
+    <svg viewBox="0 0 1100 40" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 20 Q 140 5, 275 20 Q 415 35, 550 20 Q 690 5, 825 20 Q 965 35, 1100 20" stroke="#FF00AA" stroke-width="2" stroke-dasharray="6 4" opacity="0.5"/>
+      <circle cx="90"  cy="20" r="3.5" fill="#FF00AA" opacity="0.4"/>
+      <circle cx="320" cy="20" r="2.5" fill="#a78bfa" opacity="0.5"/>
+      <circle cx="550" cy="20" r="3.5" fill="#60c8f0" opacity="0.4"/>
+      <circle cx="780" cy="20" r="2.5" fill="#FF00AA" opacity="0.4"/>
+      <circle cx="1010" cy="20" r="3.5" fill="#a78bfa" opacity="0.5"/>
+      <text x="175" y="14" font-size="9" fill="#FF00AA" opacity="0.6" font-family="serif">✦</text>
+      <text x="440" y="28" font-size="9" fill="#a78bfa" opacity="0.6" font-family="serif">✦</text>
+      <text x="665" y="14" font-size="9" fill="#60c8f0" opacity="0.6" font-family="serif">✦</text>
+      <text x="900" y="28" font-size="9" fill="#FF00AA" opacity="0.6" font-family="serif">✦</text>
+    </svg>
   </div>
 
   <div class="playground-grid reveal">
@@ -279,6 +456,7 @@
 
     <!-- CARD 1 -->
     <div class="play-card" onclick="openLightboxFromCard(this, '안녕 Hangeul')">
+      <div class="card-titlebar"><div class="card-titlebar-dots"><span></span><span></span><span></span></div><div class="card-titlebar-title">안녕 Hangeul</div><div style="width:40px"></div></div>
       <div class="play-card-img">
         <img src="hangeul book.png" alt="안녕 Hangeul">
       </div>
@@ -295,6 +473,7 @@
 
     <!-- CARD 2 -->
     <div class="play-card" onclick="openLightbox('intertwined.png', 'Intertwined')">
+      <div class="card-titlebar"><div class="card-titlebar-dots"><span></span><span></span><span></span></div><div class="card-titlebar-title">Intertwined</div><div style="width:40px"></div></div>
       <div class="play-card-img">
         <img src="intertwined.png" alt="Intertwined">
       </div>
@@ -312,6 +491,7 @@
 
     <!-- CARD 3 -->
       <div class="play-card" onclick="openLightbox('strawberry sandwich.png', 'Strawberry Sandwich')">
+      <div class="card-titlebar"><div class="card-titlebar-dots"><span></span><span></span><span></span></div><div class="card-titlebar-title">Strawberry Sandwich</div><div style="width:40px"></div></div>
       <div class="play-card-img">
         <img src="strawberry sandwich.png" alt="Strawberry Sandwich">
       </div>
@@ -326,6 +506,7 @@
 
     <!-- CARD 4 -->
       <div class="play-card" onclick="openLightbox('kenma.png', 'Kenma Kozume')">
+      <div class="card-titlebar"><div class="card-titlebar-dots"><span></span><span></span><span></span></div><div class="card-titlebar-title">Kenma Kozume</div><div style="width:40px"></div></div>
       <div class="play-card-img">
         <img src="kenma.png" alt="Kenma Kozume">
       </div>
@@ -340,6 +521,7 @@
 
     <!-- CARD 5 -->
     <div class="play-card" onclick="openLightbox('covid.png', 'Covid')">
+      <div class="card-titlebar"><div class="card-titlebar-dots"><span></span><span></span><span></span></div><div class="card-titlebar-title">The Daily Texan</div><div style="width:40px"></div></div>
       <div class="play-card-img">
         <img src="covid.png" alt="Covid">
       </div>
@@ -364,12 +546,14 @@
   <!-- LIGHTBOX OVERLAY -->
   <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
     <div class="lightbox-inner" onclick="event.stopPropagation()">
-      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <div class="lightbox-titlebar"><span class="lightbox-titlebar-label" id="lb-title-text">Preview</span><button class="lightbox-close" onclick="closeLightbox()" style="background:none;border:none;cursor:pointer;color:white;font-size:1rem;line-height:1;opacity:1;">✕</button></div>
+      <button class="lightbox-close" onclick="closeLightbox()" id="lb-close-normal">✕</button>
       <img id="lightbox-img" src="" alt="">
       <div class="lightbox-caption" id="lightbox-caption"></div>
     </div>
   </div>
 
+  <div class="chicken-border"></div>
   <footer>
     <span>Made with 💖 © Chloe Kim</span>
     <div class="footer-links">
@@ -407,6 +591,7 @@
       if (!src || src === 'YOUR_IMAGE_URL_HERE') return;
       document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox-caption').textContent = caption;
+      const lbT = document.getElementById('lb-title-text'); if (lbT) lbT.textContent = caption;
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -414,6 +599,59 @@
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
+
+    // ── FUN MODE TOGGLE ──
+    let funMode = false;
+    const trk   = document.getElementById('kawaii-trk');
+    const thumb  = document.getElementById('kawaii-thumb');
+    const faceG  = document.getElementById('face-grey');
+    const faceP  = document.getElementById('face-pink');
+    const decos  = document.getElementById('t-decos');
+    const lblN   = document.getElementById('lbl-normal');
+    const lblF   = document.getElementById('lbl-fun');
+
+    function toggleFun() {
+      funMode = !funMode;
+      document.body.classList.toggle('fun', funMode);
+      trk.setAttribute('aria-checked', String(funMode));
+      if (funMode) {
+        trk.style.cssText += 'background:#ffb3e6;border-color:#FF00AA;border-width:3px;';
+        thumb.style.transform = 'translateX(31px)';
+        faceG.style.opacity = '0'; faceP.style.opacity = '1';
+        decos.style.opacity = '1';
+        lblN.style.color = '#cc0088'; lblF.style.color = '#cc0088';
+        initSparkles();
+      } else {
+        trk.style.cssText += 'background:#e0e0e0;border-color:#b8b8b8;border-width:2.5px;';
+        thumb.style.transform = 'translateX(0)';
+        faceG.style.opacity = '1'; faceP.style.opacity = '0';
+        decos.style.opacity = '0';
+        lblN.style.color = '#aaa'; lblF.style.color = '#aaa';
+      }
+    }
+    trk.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleFun(); }
+    });
+
+    function initSparkles() {
+      const layer = document.getElementById('sparkleLayer');
+      if (layer.children.length > 0) return;
+      const syms   = ['✦','✧','✺','✿','♡','★','◈','⊹','✮','✹'];
+      const colors = ['#FF00AA','#ff99dd','#a78bfa','#60c8f0','#ffd93d','#6bcb77'];
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        el.textContent = syms[i % syms.length];
+        el.style.left = (Math.random() * 96) + '%';
+        el.style.top  = (Math.random() * 96) + '%';
+        el.style.color = colors[i % colors.length];
+        el.style.fontSize = (0.7 + Math.random() * 0.9) + 'rem';
+        el.style.animationDuration = (3 + Math.random() * 5) + 's';
+        el.style.animationDelay    = (Math.random() * 4) + 's';
+        layer.appendChild(el);
+      }
+    }
+
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
   </script>
 </body>
