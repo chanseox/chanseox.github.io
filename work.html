@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>All Work — Chloe Kim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4TR0QEYVQF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4TR0QEYVQF');
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f4ef;
+      --bg2: #eee9e1;
+      --text: #1c1a17;
+      --muted: #8a8378;
+      --border: #ddd8cf;
+      --pink: #d98b7e;
+      --grad: linear-gradient(135deg, #FF00AA, #00BBFF);
+      --grad-text: linear-gradient(135deg, #FF00AA, #d98b7e);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* GRAIN OVERLAY */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px;
+    }
+
+    /* SCROLL PROGRESS BAR */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--grad);
+      z-index: 9999;
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem clamp(3.5rem, 8vw, 10rem);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(247,244,239,0.9);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+    .nav-logo span {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: italic;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 1px; background: var(--grad);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after { transform: scaleX(1); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 9rem clamp(3.5rem, 8vw, 10rem) 3rem;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    .page-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 500;
+      margin-bottom: 0.8rem;
+    }
+    .page-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--text);
+    }
+    .page-title em { font-style: italic; color: var(--pink); }
+    .page-subtitle {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* BACK LINK */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link .arrow { display: inline-block; transition: transform 0.2s; }
+    .back-link:hover .arrow { transform: translateX(-3px); }
+
+    /* WORK GRID */
+    #work {
+      padding: 0 clamp(3.5rem, 8vw, 10rem) 7rem;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .project-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: var(--grad);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 24px 56px rgba(201,82,106,0.12); }
+    .project-card:hover::after { opacity: 0.03; }
+
+    .project-card-img {
+      width: 100%; height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .project-card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .project-card-emoji { font-size: 3.5rem; opacity: 0.6; }
+
+    .project-card-body {
+      padding: 1.8rem 2rem 2.2rem;
+      display: flex; flex-direction: column; gap: 0.6rem; flex: 1;
+    }
+    .project-tags-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
+    .tag {
+      font-size: 0.68rem;
+      font-family: 'Epilogue', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      color: var(--text);
+    }
+    .project-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem; font-weight: 400;
+      letter-spacing: -0.015em; color: var(--text); margin-top: 0.2rem;
+    }
+    .project-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.75; flex: 1; }
+    .project-view-work {
+      margin-top: 1rem; font-size: 0.85rem; color: var(--text);
+      font-weight: 400; display: flex; align-items: center; gap: 0.3rem; transition: gap 0.2s;
+    }
+    .project-view-work span { display: inline-block; transition: transform 0.2s; }
+    .project-card:hover .project-view-work span { transform: translateX(4px); }
+
+    /* REVEAL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 1.8rem clamp(3.5rem, 8vw, 10rem);
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.73rem; color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .project-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .project-cards { grid-template-columns: 1fr; }
+      #work { padding: 0 1.5rem 5rem; }
+      .page-header { padding: 8rem 1.5rem 2.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">
+      Chloe <span>Kim</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="https://drive.google.com/file/d/1SjDSq7AbvfkEc0EcZjWLGlEtlUB7uCuA/view?usp=sharing" target="_blank">Resume ↗</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <a href="index.html" class="back-link"><span class="arrow">←</span> Back to portfolio</a>
+    <div class="page-label">All Work</div>
+    <h1 class="page-title">Every <em>project,</em><br>in one place.</h1>
+    <p class="page-subtitle">Product design, UX research, accessibility, and graphic design work.</p>
+  </div>
+
+  <section id="work">
+    <div class="project-cards">
+
+      <!-- 1. Zen Meditation -->
+      <a href="zen.html" class="project-card reveal">
+        <div class="project-card-img" style="background:#d4c5b0; padding:0;">
+          <img src="zen thumbnail.png" alt="Zen Meditation project" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">Product Design</span>
+            <span class="tag">Eco-Centric Design</span>
+          </div>
+          <div class="project-name">Zen Meditation</div>
+          <div class="project-desc">A meditative experience software designed for bridging the gap between humans and plant species.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <!-- 2. Workrise Profiles -->
+      <a href="workrise.html" class="project-card reveal" style="transition-delay:0.07s">
+        <div class="project-card-img" style="background:#8fb5a5; padding:0;">
+          <img src="workrise thumbnail.png" alt="Workrise Profiles project" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">Product Design</span>
+            <span class="tag">Internship</span>
+          </div>
+          <div class="project-name">Workrise Profiles</div>
+          <div class="project-desc">Designing customer's profile experience for the Workrise client.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <!-- 3. H-E-B Pill Reminder -->
+      <a href="heb.html" class="project-card reveal" style="transition-delay:0.14s">
+        <div class="project-card-img" style="background:#6b95bc; padding:0;">
+          <img src="heb thumbnail.png" alt="H-E-B Pill Reminder project" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">Product Design</span>
+            <span class="tag">Internship</span>
+          </div>
+          <div class="project-name">H-E-B Pill Reminder</div>
+          <div class="project-desc">A digital Pill Reminder designed to be implemented into the My H-E-B app.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <!-- 4. Riot Games Audit -->
+      <a href="riot-accessibility.html" class="project-card reveal" style="transition-delay:0.07s">
+        <div class="project-card-img" style="padding:0; overflow:hidden;">
+          <img src="riot-thumbnail.png" alt="Riot Games Accessibility Audit" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">UX Research</span>
+            <span class="tag">Accessibility</span>
+          </div>
+          <div class="project-name">Riot Games Audit</div>
+          <div class="project-desc">A WCAG 2.2 AA accessibility audit of Riot Games' website uncovering 7 critical barriers affecting millions of users.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <!-- 5. Gazelle Ecosolutions -->
+      <a href="gazelle.html" class="project-card reveal" style="transition-delay:0.14s">
+        <div class="project-card-img" style="background:#b8d4be; padding:0;">
+          <img src="gazelle-thumbnail.jpg" alt="Gazelle Ecosolutions project" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">Product Design</span>
+            <span class="tag">UX Research</span>
+          </div>
+          <div class="project-name">Gazelle Ecosolutions</div>
+          <div class="project-desc">Designing a desktop dashboard and onboarding experience for an environmental data platform used by carbon credit verifiers.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+      <!-- 6. Graphic Design -->
+      <a href="graphics.html" class="project-card reveal" style="transition-delay:0.21s">
+        <div class="project-card-img" style="background:#c8bfad; padding:0;">
+          <img src="graphics-thumbnail.png" alt="Graphic Design work"
+               onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:3.5rem;opacity:0.5\'>✏️</div>';" />
+        </div>
+        <div class="project-card-body">
+          <div class="project-tags-row">
+            <span class="tag">Graphic Design</span>
+          </div>
+          <div class="project-name">Graphic Design</div>
+          <div class="project-desc">Branding, editorial illustration, posters, and typography made outside product and UX work.</div>
+          <div class="project-view-work">View work <span>›</span></div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>Made with 💖 © Chloe Kim</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chloechanseo/" target="_blank">LinkedIn ↗</a>
+      <a href="https://drive.google.com/file/d/1SjDSq7AbvfkEc0EcZjWLGlEtlUB7uCuA/view?usp=sharing" target="_blank">Resume ↗</a>
+      <a href="mailto:chloekimx@gmail.com">Email ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    const progressBar = document.getElementById('scrollProgress');
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+      navbar.classList.toggle('scrolled', scrollTop > 40);
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
